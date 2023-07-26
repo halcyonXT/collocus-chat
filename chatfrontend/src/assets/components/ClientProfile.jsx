@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function ClientProfile(props) {
     return (
-        <div className='w-[15%] overflow-hidden flex h-full border-r border-slate-600'>
+        <div className='w-50 overflow-hidden flex h-full border-r border-slate-600'>
             <img 
                 src='https://i.ibb.co/1qqM328/IMG-0634.jpg'
                 className='h-full aspect-square rounded-[20%] border border-slate-500'
