@@ -4,16 +4,29 @@ import collopng from '/collo.png';
 import SidebarGroup from './assets/components/SidebarGroup';
 import SidebarProfile from './assets/components/SidebarProfile';
 import MessagingPanel from './assets/components/MessagingPanel';
+import RegistrationForm from './assets/components/RegistrationForm';
 
 import { UserContext } from './assets/context/userContext';
 import LoggedOutPage from './assets/components/LoggedOutPage';
+import LoginForm from './assets/components/LoginForm';
+import { Routes, Route, Link } from "react-router-dom";
 //asdf
 
 function App() {
 
     return (
-        <>
-            <Home/>
+        <>  
+            <Routes>
+                <Route exact path='/' element={
+                    <Home/>
+                }/>
+                <Route path='/register' element={
+                    <RegistrationForm/>
+                }/>
+                <Route path='/login' element={
+                    <LoginForm/>
+                }/>
+            </Routes>
         </>
     );
 }
@@ -87,12 +100,16 @@ const loggedOutSidebar =
         <div className='w-full text-lg text-slate-500 quicksand box-border px-3 mt-3 text-center font-semibold'>
             Join <span className='text-slate-200 ysab font-bold tracking-wide'>COLLOCUS</span> now! <br/>Chat in real-time and connect with people from all over the world, instantly.
         </div>
-        <div className='mt-6 py-1 font-medium border border-slate-400 rounded-xl cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
-            LOG IN
-        </div>
-        <div className='mt-4 py-1 font-medium border border-slate-400 rounded-xl cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
-            SIGN UP
-        </div>
+        <Link to="/login">
+            <div className='mt-6 py-1 font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
+                LOG IN
+            </div>
+        </Link>
+        <Link to="/register">
+            <div className='mt-4 py-1 font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
+                SIGN UP
+            </div>
+        </Link>
     </>
 
 export default App

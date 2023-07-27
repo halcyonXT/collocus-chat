@@ -114,6 +114,7 @@ export default function MessagingPanel(props) {
                             grow 
                             text-slate-400 
                             placeholder:text-slate-600 
+                            focus:border-slate-300
                             outline-none 
                             flex justify-start items-center`}
                         placeholder='Enter your message here' 

@@ -224,7 +224,7 @@ export default function LoggedOutPage() {
                             placeholder:text-slate-600 
                             outline-none 
                             flex justify-start items-center`}
-                        placeholder='Enter your message here' 
+                        placeholder='Join Collocus to be able to message' 
                         spellCheck="false"
                         disabled></textarea>
                     </form>
