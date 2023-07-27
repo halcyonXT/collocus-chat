@@ -8,13 +8,17 @@ const cookieParser = require("cookie-parser")
 const expressValidator = require("express-validator");
 const router = express.Router()
 const mongoose = require('mongoose')
+const { graphqlHTTP } = require('express-graphql');
 
 const app = express();
 app.use(cors());
 app.use(json())
 app.use(urlencoded({ extended: false }))
-app.use(cookieParser())
-app.use(expressValidator())
+app.use(cookieParser());
+app.use(expressValidator());
+app.use('/graphql', graphqlHTTP({
+    
+}))
 
 mongoose
     .connect(process.env.MONGO_URI)
