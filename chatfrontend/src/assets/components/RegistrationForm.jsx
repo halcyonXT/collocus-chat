@@ -83,7 +83,7 @@ export default function RegistrationForm() {
     return (
         <>
             <div className='w-screen h-[100dvh] grid place-items-center bg-slate-900'>
-                <div className='w-96 rounded-lg h-max p-4 max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] bg-slate-950 flex flex-col border border-slate-600 shadow-sm shadow-black'>
+                <div className='w-96 scale-110 rounded-lg h-max p-4 max-w-[calc(100vw-3rem)] max-h-[calc(100dvh-2rem)] bg-slate-950 flex flex-col border border-slate-600 shadow-sm shadow-black'>
                     <div className='flex pb-4 border-b border-slate-600 mb-1 justify-between'>
                         <a href="/" className='h-max w-[80%] max-w-[80%]'>
                             <div className="w-[80%] max-w-[80%] h-8 flex items-center justify-start gap-3 tracking-widest select-none box-content">
@@ -156,12 +156,12 @@ export default function RegistrationForm() {
                                 By checking this box you agree to follow our&nbsp;
                                 <span className='text-slate-300 cursor-pointer underline' onClick={() => setTermsActivated(prev => !prev)}>Terms and Conditions</span>
                             </div>
-                            <div class="checkbox-wrapper-1">
+                            <div class="checkbox-wrapper-1" style={{display: 'flex', justifyContent: 'flex-end', overflow: 'visible'}}>
                                 <input id="example-1" class="substituted" type="checkbox" aria-hidden="true" checked={info.termsAccepted} onClick={() => setInfo(prev => ({...prev, termsAccepted: !prev.termsAccepted}))} />
-                                <label for="example-1"></label>
+                                <label for="example-1" style={{maxHeight: '1em', maxWidth: '1em'}}></label>
                             </div>
                         </div>
-                        <div className='py-1 mt-1 mb-1 mx-auto font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-40 text-slate-400 ysab tracking-widest text-xs hover:text-slate-200 hover:border-slate-200 duration-150'>
+                        <div className='py-1 mt-2 mb-1 mx-auto font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-40 text-slate-400 ysab tracking-widest text-xs hover:text-slate-200 hover:border-slate-200 duration-150'>
                             REGISTER
                         </div>
                     </div>

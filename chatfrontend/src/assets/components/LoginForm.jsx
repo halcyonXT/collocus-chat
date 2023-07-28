@@ -62,7 +62,7 @@ export default function LoginForm() {
     return (
         <>
             <div className='w-screen h-[100dvh] grid place-items-center bg-slate-900'>
-                <div className='w-96 rounded-lg h-max p-4 max-w-[calc(100vw-2rem)] max-h-[calc(100dvh-2rem)] bg-slate-950 flex flex-col border border-slate-600 shadow-sm shadow-black'>
+                <div className='w-96 scale-110 rounded-lg h-max p-4 max-w-[calc(100vw-3rem)] max-h-[calc(100dvh-2rem)] bg-slate-950 flex flex-col border border-slate-600 shadow-sm shadow-black'>
                     <div className='flex pb-4 border-b border-slate-600 mb-1 justify-between'>
                         <a href="/" className='h-max w-[80%] max-w-[80%]'>
                             <div className="w-[80%] max-w-[80%] h-8 flex items-center justify-start gap-3 tracking-widest select-none box-content">
@@ -71,7 +71,7 @@ export default function LoginForm() {
                                     <div className="text-slate-300 font-black lg:leading-none md:leading-none decoration-0 text-[0.8rem]">
                                         COLLOCUS
                                     </div>
-                                    <div className="mt-1 text-slate-500 text-[7px]">
+                                    <div className="mt-1 text-slate-500 text-[6px]">
                                         CONNECTING PEOPLE, INSTANTLY
                                     </div>
                                 </div>

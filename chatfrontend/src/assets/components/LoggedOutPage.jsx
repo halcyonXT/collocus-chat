@@ -37,7 +37,7 @@ function addMinutesToTime(timeString, offset) {
 }
 
 function isElementScrolledToBottom(element) {
-    return element.scrollTop + element.clientHeight >= element.scrollHeight;
+    return element.scrollTop + element.clientHeight >= element.scrollHeight - 10;
   }
 
 const FOLLOWUP_MESSAGES = [
@@ -63,6 +63,7 @@ export default function LoggedOutPage() {
     const {isMobile} = React.useContext(PhoneContext)
     const [renderedMessages, setRenderedMessages] = React.useState([])
     const [time, setTime] = React.useState(0)
+    const [newMessages, setNewMessages] = React.useState(false)
     const messagesRef = React.useRef(null)
 
     React.useEffect(() => {
@@ -117,14 +118,26 @@ export default function LoggedOutPage() {
             elf.height = `${el.scrollHeight}px`
             el.style.height = `${el.scrollHeight}px`
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+        } else {
+            setNewMessages(true)
         }
     }, [renderedMessages])
+
+    React.useEffect(() => {
+        if (null) {
+            if (newMessages) {
+                if (isElementScrolledToBottom(document.querySelector("#messages-wrapper"))) {
+                    setNewMessages(false)
+                }
+            }
+        }
+    }, [messagesRef.current])
 
     return (
         <>
             <div className='flex-1 flex flex-col justify-end h-full'>
             <UpperPanel disabled={true}/>
-            <div ref={messagesRef} id="messages-wrapper" className='overflow-y-scroll overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-[3%] box-border flex justify-start flex-col pb-0 md:pb-0'>
+            <div ref={messagesRef} id="messages-wrapper" className='overflow-y-scroll relative overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-8 box-border flex justify-start flex-col pb-0 md:pb-0'>
                 <div className='w-full grow'></div>
                 <Message
                     name="Alexander"
@@ -202,7 +215,14 @@ export default function LoggedOutPage() {
                     renderedMessages
                 }
             </div>
-            <div className='w-full min-h-[7%] h-max max-h-[15rem] bg-slate-950 border-t border-slate-700 grid place-items-center box-border p-2'>
+            <div className='w-full min-h-[7%] h-max max-h-[15rem] bg-slate-950 border-t border-slate-700 grid place-items-center box-border p-2 relative'>
+                {
+                    newMessages
+                    &&
+                    <div className='absolute right-[calc(50%+1.5rem)] -top-16 rounded-md h-12 aspect-square shadow-sm grid place-items-center bg-slate-950 border border-slate-500 animate-bounce fill-slate-500'>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="80%" viewBox="0 -960 960 960"><path d="M480-345 240-585l43-43 197 198 197-197 43 43-240 239Z"/></svg>
+                    </div>
+                }
                 <div className='md:w-[98%] w-full h-[90%] border border-slate-700 rounded-[1vh] box-border my-[0.5%] px-[3%] md:px-[1%] flex justify-start items-center'>
                     <form className='form-input grow h-max'>
                         <textarea className={`

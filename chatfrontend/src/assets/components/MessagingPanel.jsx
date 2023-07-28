@@ -67,7 +67,7 @@ export default function MessagingPanel(props) {
     return (
         <div className='flex-1 flex flex-col justify-end h-full'>
             <UpperPanel/>
-            <div ref={messagesRef} className='overflow-y-scroll overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-[3%] box-border flex justify-start flex-col pb-0 md:pb-0'>
+            <div ref={messagesRef} className='overflow-y-scroll overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-8 box-border flex justify-start flex-col pb-0 md:pb-0'>
                 <div className='w-full grow'></div>
                 <Message
                     name="Big length name truly this is a huge ass name"
