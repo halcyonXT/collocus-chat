@@ -104,7 +104,7 @@ export default function MessagingPanel(props) {
                             pl-0
                             min-h-full 
                             max-h-[20vh] 
-                            h-max 
+                            h-7 
                             resize-none 
                             overflow-y-hidden 
                             w-full 

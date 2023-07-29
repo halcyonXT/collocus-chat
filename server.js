@@ -5,31 +5,44 @@ require('dotenv').config()
 const http = require('http');
 const socketio = require('socket.io');
 const cookieParser = require("cookie-parser")
-const expressValidator = require("express-validator");
 const router = express.Router()
-const mongoose = require('mongoose')
+const validator = require('validator');
+
+const connectDB = require('./config/connectDB.js')
+
+const colors = require('colors');
 const { graphqlHTTP } = require('express-graphql');
 
-const schema = require('./models/UserGQL')
+const schema = require('./schema/UserGQL')
 
 const app = express();
+
 app.use(cors());
 app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cookieParser());
-app.use(expressValidator());
+
+
+const customErrorHandler = (error) => {
+    return {
+      message: error.message,
+      locations: error.locations,
+      path: error.path,
+    };
+  };
+
 
 app.use('/graphql', graphqlHTTP({
     schema,
-    graphiql: process.env.NODE_ENV === 'development'
+    graphiql: process.env.NODE_ENV === 'development',
+    customFormatErrorFn: customErrorHandler
 }))
 
-mongoose
-    .connect(process.env.MONGO_URI)
-    .then(() => console.log('[success] MongoDB connected'))
-    .catch((err) => console.log('[error]' + err))
+
 
 const server = http.createServer(app)
+connectDB()
+
 const io = socketio(server, {
     cors: {
         origin: 'http://localhost:5173',
@@ -39,7 +52,7 @@ const io = socketio(server, {
 
 
 io.on('connection', socket => {
-    console.log('[success] New WS connection...')
+    console.log('[info] New WS connection...'.cyan.bold)
 
     socket.broadcast.emit('message', 'A user has joined the chat');
 
@@ -50,4 +63,4 @@ io.on('connection', socket => {
 
 const PORT = 8080;
 
-server.listen(PORT, () => console.log('[success] Server running on port ' + PORT));
+server.listen(PORT, () => console.log(`[success] Server running on port ${PORT}`.green.bold));

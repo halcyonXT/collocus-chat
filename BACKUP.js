@@ -107,17 +107,17 @@ const login = async (req, res) => {
 
 const userRegisterValidator = (req, res, next) => {
     // username is not null
-    req.check("username", "Username is required").notEmpty()
+    args.check("username", "Username is required").notEmpty()
 
     //email is not null, valid and normalized
-    req.check("email", "Email is required").notEmpty()
-    req.check("email", "Invalid email").isEmail()
+    args.check("email", "Email is required").notEmpty()
+    args.check("email", "Invalid email").isEmail()
 
-    req.check("password", "Password is required").notEmpty()
-    req.check("password")
+    args.check("password", "Password is required").notEmpty()
+    args.check("password")
         .isLength({ min: 6 })
         .withMessage("Password must contain more than 6 characters")
-    req.check("password", "Password must have at least 1 uppercase letter, 1 lowercase letter and 1 number")
+    args.check("password", "Password must have at least 1 uppercase letter, 1 lowercase letter and 1 number")
         .matches(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/,
             "i"
         )

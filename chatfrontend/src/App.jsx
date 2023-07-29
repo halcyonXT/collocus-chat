@@ -9,10 +9,11 @@ import RegistrationForm from './assets/components/RegistrationForm';
 import { UserContext } from './assets/context/userContext';
 import LoggedOutPage from './assets/components/LoggedOutPage';
 import LoginForm from './assets/components/LoginForm';
-import { Routes, Route, Link } from "react-router-dom";
+import { Routes, Route, Link, useLocation } from "react-router-dom";
 //asdf
 
 function App() {
+
 
     return (
         <>  
@@ -33,6 +34,8 @@ function App() {
 
 const Home = () => {
     const {user} = React.useContext(UserContext)
+
+
     return (
         <div className="w-screen h-[100dvh] bg-slate-900 flex">
                 <div className="hidden p-3 h-full bg-slate-950 border-r border-slate-600 w-[18rem] md:flex md:flex-col">

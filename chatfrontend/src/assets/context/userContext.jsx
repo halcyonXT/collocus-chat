@@ -3,8 +3,8 @@ import React, { createContext, useEffect } from 'react';
 const UserContext = createContext();
 
 const UserContextProvider = ({ children }) => {
-  const user = React.useState({
-    loggedIn: false
+  const [user, setUser] = React.useState({
+    loggedIn: true
   })
 
 
