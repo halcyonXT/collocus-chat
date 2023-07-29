@@ -5,9 +5,9 @@ export default function SidebarProfile(props) {
     const [hovered, setHovered] = React.useState(false)
 
     return (
-        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className='w-full py-1 flex cursor-pointer items-center select-none mb-2 justify-start lg:gap-2 md:gap-1 duration-150 rounded-full box-content hover:bg-slate-900 xl:h-6 lg:h-5 md:h-4 xl:text-[14px] xl:leading-none lg:text-[10px] lg:leading-none md:text-[6px] md:leading-none'>
+        <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className='w-full py-1 flex cursor-pointer items-center select-none mb-2 justify-start gap-2 duration-150 rounded-full box-content hover:bg-slate-900 h-5'>
             <img src={props.image} className='h-full rounded-full ml-1 aspect-square'></img>
-            <span className='grow quicksand overflow-hidden whitespace-nowrap text-ellipsis text-slate-400 leading-5 xl:text-[16px] xl:leading-5 lg:text-[12px] lg:leading-5 md:text-[8px]'>
+            <span className='grow quicksand overflow-hidden whitespace-nowrap text-ellipsis text-slate-400 leading-5 text-[14px]'>
                 {props.name}
             </span>
             {
