@@ -1,12 +1,53 @@
 import React from 'react';
 import collopng from '/collo.png';
 import { Link } from 'react-router-dom';
+import { useMutation, gql } from '@apollo/client';
+import { useNavigate } from "react-router-dom";
+import { UserContext } from '../context/userContext';
+
+const LOGIN_USER = gql`
+  mutation LoginUser($email: String!, $password: String!) {
+    login(email: $email, password: $password) {
+      status
+      message
+    }
+  }
+`;
+
 
 export default function LoginForm() {
+    const navigate = useNavigate();
+    const { updateUser } = React.useContext(UserContext)
     const [info, setInfo] = React.useState({
         email: "",
         password: "",
     })
+
+    const [status, setStatus] = React.useState({
+        active: false,
+        status: "success",
+        message: ""
+    })
+
+    const [loginUser, { loading, error, data }] = useMutation(LOGIN_USER);
+
+    const handleFormSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const { data } = await loginUser({
+              variables: { email: info.email, password: info.password },
+            });
+            setStatus({active: true, status: data?.login.status, message: data?.login.message})
+            if (data?.login?.status === "success") {
+                setTimeout(() => {
+                    updateUser();
+                    navigate("/");
+                }, 100)
+            }
+          } catch (error) {
+            setStatus({active: true, status: "error", message: "Server error"});
+          }
+    };
 
     const [passwordVisible, setPasswordVisible] = React.useState(false)
 
@@ -119,13 +160,22 @@ export default function LoginForm() {
                                 Password
                             </div>
                         </div>
-                        <div className='py-1 mt-2 mb-1 mx-auto font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-40 text-slate-400 ysab tracking-widest text-xs hover:text-slate-200 hover:border-slate-200 duration-150'>
+                        <div onClick={handleFormSubmit} className='py-1 mt-2 mb-1 mx-auto font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-40 text-slate-400 ysab tracking-widest text-xs hover:text-slate-200 hover:border-slate-200 duration-150'>
                             LOGIN
                         </div>
                     </div>
                     <div className='w-full text-center text-xs quicksand text-slate-500'>
                         New to Collocus? <Link to="/register"><span className='text-slate-300 underline font-semibold'>Sign up.</span></Link>
                     </div>
+                    {
+                        status.active &&
+                        <>
+                            <div className='w-full h-8'></div>
+                            <div className={`absolute bottom-0 quicksand font-medium left-0 text-base h-8 rounded-bl-lg rounded-br-lg w-full grid place-items-center leading-none py-2 ${status.status === "success" ? "bg-green-400 text-green-700" : "bg-red-400 text-red-700"}`}>
+                                {status.message}
+                            </div>
+                        </>
+                    }
                 </div>
             </div>
         </>

@@ -8,6 +8,9 @@ emailValidator = function(val){
 }
 
 const userSchema = new mongoose.Schema({
+    id: {
+        type: mongoose.Schema.Types.ObjectId
+    },
     username: {
         type: String,
         required: true,
@@ -32,7 +35,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    headline: String,
     salt: String,
+    channels: [String],
     profilePicture: String,
 }, {
     timestamps: true

@@ -65,7 +65,7 @@ export default function MessagingPanel(props) {
     }, [messageInput, zoomLevel])
 
     return (
-        <div className='flex-1 flex flex-col justify-end h-full'>
+        <div className={`w-[calc(100%-18rem)] max-w-[calc(100%-18rem)] flex flex-col justify-end h-full`}>
             <UpperPanel/>
             <div ref={messagesRef} className='overflow-y-scroll overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-8 box-border flex justify-start flex-col pb-0 md:pb-0'>
                 <div className='w-full grow'></div>
@@ -104,7 +104,7 @@ export default function MessagingPanel(props) {
                             pl-0
                             min-h-full 
                             max-h-[20vh] 
-                            h-max 
+                            h-7 
                             resize-none 
                             overflow-y-hidden 
                             w-full 
