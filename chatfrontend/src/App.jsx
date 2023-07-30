@@ -10,13 +10,43 @@ import { UserContext } from './assets/context/userContext';
 import LoggedOutPage from './assets/components/LoggedOutPage';
 import LoginForm from './assets/components/LoginForm';
 import { Routes, Route, Link, useLocation } from "react-router-dom";
-//asdf
+
+const useLoadingSequence = async (array) => {
+    return new Promise(async (resolve, reject) => {
+        for (let promise of array) {
+            await promise
+        }
+        resolve(true)
+    })
+}
 
 function App() {
+    const [isLoading, setIsLoading] = React.useState(true)
+    const {loading} = React.useContext(UserContext)
 
+    React.useEffect(() => {
+        if (isLoading) {
+            if (!loading) {
+                setTimeout(() => {
+                    setIsLoading(false)
+                }, 175)
+            }
+        }
+    }, [loading])
 
     return (
         <>  
+            {
+                isLoading
+                &&
+                <div className='absolute top-0 left-0 w-screen h-[100dvh] grid place-items-center bg-slate-950 animate-pulse z-50'>
+                    <div className='h-20'>
+                        <img
+                            src={collopng}
+                            className='h-full'/>
+                    </div>
+                </div>
+            }
             <Routes>
                 <Route exact path='/' element={
                     <Home/>

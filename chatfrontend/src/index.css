@@ -46,6 +46,7 @@ html {
 
 ::-webkit-scrollbar {
     width: 5px;
+    height: 4px;
     transition-duration: 0.15s;
   }
   

@@ -35,7 +35,9 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    headline: String,
     salt: String,
+    channels: [String],
     profilePicture: String,
 }, {
     timestamps: true

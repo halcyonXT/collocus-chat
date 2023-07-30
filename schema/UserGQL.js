@@ -26,7 +26,9 @@ const UserType = new GraphQLObjectType({
         _id: { type: GraphQLID },
         username: { type: GraphQLString },
         email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
+        profilePicture: { type: GraphQLString },
+        headline: { type: GraphQLString }
     })
 });
 
@@ -59,6 +61,22 @@ const RootQuery = new GraphQLObjectType({
             }
         },
 
+        client: {
+            type: UserType,
+            args: {},
+            resolve(parent, args, context) {
+                return User.findById(isValidToken(context.cookies.jwt))
+            }
+        }
+    }
+});
+
+/**/
+
+const mutation = new GraphQLObjectType({
+    name: "Mutation",
+    fields: {
+        
         login: {
             type: ResponseType,
             args: {
@@ -67,6 +85,12 @@ const RootQuery = new GraphQLObjectType({
             },
             resolve (parent, args, context) {
                 return (async () => {
+                    if (validator.isEmpty(args.email)) {
+                        return statusRes("error", "Email is required")
+                    }
+                    if (validator.isEmpty(args.password)) {
+                        return statusRes("error", "Password is required")
+                    }
                     if (isValidToken(context.cookies.jwt)) {
                         return statusRes("error", "User is already logged in")
                     }
@@ -103,20 +127,12 @@ const RootQuery = new GraphQLObjectType({
                 }
             }
         },
-    }
-});
-
-/**/
-
-const mutation = new GraphQLObjectType({
-    name: "Mutation",
-    fields: {
         register: {
             type: ResponseType,
             args: {
                 username: { type: GraphQLNonNull(GraphQLString) },
                 email: { type: GraphQLNonNull(GraphQLString) },
-                password: { type: GraphQLNonNull(GraphQLString) }
+                password: { type: GraphQLNonNull(GraphQLString) },
             },
             resolve (parent, args) {
                 return (async () => {
@@ -151,7 +167,9 @@ const mutation = new GraphQLObjectType({
                         const user = new User({
                             username: args.username.trim(),
                             email: args.email.trim(),
-                            password: args.password.trim()
+                            password: args.password.trim(),
+                            profilePicture: "https://i.ibb.co/CnsH1T7/default.png",
+                            headline: "Brand new user"
                         })
                         await user.save()
                         return statusRes("success", "Registered successfully. Log in to proceed") 

@@ -17,7 +17,10 @@ const schema = require('./schema/UserGQL')
 
 const app = express();
 
-app.use(cors());
+app.use(cors({ 
+    credentials: true,
+    origin: "http://localhost:5173"
+}));
 app.use(json())
 app.use(urlencoded({ extended: false }))
 app.use(cookieParser());
