@@ -201,3 +201,30 @@ select:-webkit-autofill:focus {
   -webkit-text-fill-color: #cfcbc3;
   -webkit-box-shadow: 0 0 0px 1000px #030617 inset;
 }
+
+@keyframes openModal {
+  from {
+    transform: scaleX(0.1);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+.open-modal {
+  animation: openModal 0.2s ease-in 0s 1 normal forwards;
+}
+
+.open-modal-content {
+  opacity: 0;
+  animation: appear 0.15s linear 0.2s 1 normal forwards;
+}

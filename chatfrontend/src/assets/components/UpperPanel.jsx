@@ -5,13 +5,16 @@ import SidebarGroup from './SidebarGroup';
 import SidebarProfile from './SidebarProfile';
 import samplePfp1 from '/sample1.webp'
 import { UserContext } from '../context/userContext';
-
+import { ChannelContext } from '../context/channelContext';
+//s
 export default function UpperPanel(props) {
     const {isMobile} = React.useContext(PhoneContext)
+    const {channels} = React.useContext(ChannelContext)
     const [menuLaunched, setMenuLaunched] = React.useState(false)
+    const [renderChannels, setRenderChannels] = React.useState([])
     let menuRef = React.useRef(null)
-
     const {user} = React.useContext(UserContext)
+
     const launchPhoneMenu = async () => {
         if (menuLaunched) {
             let anim = document.querySelector('.popout-animation').animate([
@@ -28,7 +31,16 @@ export default function UpperPanel(props) {
             setMenuLaunched(true)
         }
     }
-    console.log(user)
+
+    React.useEffect(() => {
+        if (channels.length > 0) {
+            setRenderChannels(channels)
+        }
+    }, [channels])
+
+    const changeChannels = (id) => {
+        props.changeChannels(id)
+    }
 
     if (isMobile) {
         return (
@@ -67,7 +79,7 @@ export default function UpperPanel(props) {
         )
     } else {
         return (
-            <div className={`w-full min-h-8 h-8 bg-slate-950 border-b box-content p-3 flex border-slate-600 ${props.disabled && "pointer-events-none"}`}>
+            <div className={`w-full min-h-8 h-8 bg-slate-950 border-b box-content overflow-y-visible p-3 flex border-slate-600 ${props.disabled && "pointer-events-none"}`}>
                 <div className='w-[17.5rem] flex h-full border-r border-slate-600 box-content pr-2'>
                     <div className='h-full overflow-visible aspect-square relative'>
                         <img 
@@ -94,51 +106,53 @@ export default function UpperPanel(props) {
                         </div>
                     </div>
                 </div>
-                <div className='box-border w-[calc(100%-20rem)] max-w-[calc(100%-20rem)]  mx-4 overflow-y-hidden overflow-x-scroll flex gap-2 justify-start h-full pointer-events-auto'>
-
-                    
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
+                <div className='box-border w-[calc(100%-20rem)] max-w-[calc(100%-20rem)] ml-[0.66rem] overflow-x-auto overflow-y-hidden flex gap-2 justify-start h-full pointer-events-auto'>
+                    <Servers servers={renderChannels} changeChannels={changeChannels}/>
+                    <div onClick={() => props.setChannelModalOpen(prev => !prev)} className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="80%" viewBox="0 -960 960 960"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z"/></svg>
                     </div>
                 </div>
             </div>
         )
     }
 }
+
+const Servers = React.memo(({servers, changeChannels}) => {
+
+    const hovered = (id, action) => {
+        let newTarget = document.getElementById(id)
+        if (action == "enter") {
+            newTarget.style.opacity = "1"
+            newTarget.style.transform = "translateX(0px)"
+        } else {
+            newTarget.style.opacity = "0"
+            newTarget.style.transform = "translateX(-0.5rem)"
+        }
+    }
+
+    if (!servers || servers.length == 0) {return}
+
+    return (
+        <>
+            {
+                servers.map(server => {
+                    return <>
+                        <div id={server._id} className='opacity-0 -translate-x-2 duration-100 z-[999] absolute text-slate-200 text-sm top-12 -ml-4 quicksand pointer-events-none font-medium py-1 px-2 rounded-lg bg-gray-900 border border-slate-500'>
+                            {server.name}
+                        </div>
+                        <div key={server._id} onClick={() => changeChannels(server._id)} onMouseEnter={(e) => hovered(server._id, "enter")} onMouseLeave={(e) => hovered(server._id, "leave")} className='h-full relative w-max rounded-full box-border border duration-100 overflow-visible cursor-pointer border-slate-500 hover:border-slate-300 fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
+                            <img 
+                                className='rounded-full aspect-square h-full'
+                                src={server.image ? server.image : "https://i.ibb.co/DDx3QSW/defaultserver.png"}
+                                onError={(e) => e.target.src = "https://i.ibb.co/DDx3QSW/defaultserver.png"}
+                            />
+                        </div>
+                    </>
+                })
+            }
+        </>
+    )
+})
 
 const sideMenu = <>
 <div className="absolute popout-animation top-[8%] p-[1%] h-[92%] w-full bg-slate-950 flex flex-col">

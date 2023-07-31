@@ -171,7 +171,7 @@ export default function LoginForm() {
                         status.active &&
                         <>
                             <div className='w-full h-8'></div>
-                            <div className={`absolute bottom-0 quicksand font-medium left-0 text-base h-8 rounded-bl-lg rounded-br-lg w-full grid place-items-center leading-none py-2 ${status.status === "success" ? "bg-green-400 text-green-700" : "bg-red-400 text-red-700"}`}>
+                            <div className={`absolute bottom-0 quicksand font-medium left-0 text-base h-8 rounded-bl-lg rounded-br-lg w-full grid place-items-center leading-none py-2 ${status.status === "success" ? "bg-green-600 text-green-300" : "bg-red-600 text-red-300"}`}>
                                 {status.message}
                             </div>
                         </>
