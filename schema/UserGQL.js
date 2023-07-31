@@ -1,4 +1,5 @@
 const User = require('../models/User.js')
+const Channel = require('../models/Channel.js')
 const validator = require('validator')
 const jwt = require('jsonwebtoken')
 
@@ -28,7 +29,8 @@ const UserType = new GraphQLObjectType({
         email: { type: GraphQLString },
         password: { type: GraphQLString },
         profilePicture: { type: GraphQLString },
-        headline: { type: GraphQLString }
+        headline: { type: GraphQLString },
+        channels: { type: GraphQLList(GraphQLString) }
     })
 });
 
@@ -37,6 +39,32 @@ const ResponseType = new GraphQLObjectType({
     fields: () => ({
         status: { type: GraphQLString },
         message: { type: GraphQLString }
+    })
+})
+
+const ChannelType = new GraphQLObjectType({
+    name: "Channel",
+    fields: () => ({
+        _id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        picture: { type: GraphQLString },
+        members: { type: GraphQLList(GraphQLString) },
+        messages: { type: GraphQLList(MessageType) },
+        owner: { type: GraphQLString }
+    })
+})
+
+const MessageType = new GraphQLObjectType({
+    name: "Message",
+    fields: () => ({
+        sender: { 
+            type: UserType,
+            resolve(parent, args) {
+                return User.findById(parent.id)
+            }
+        },
+        timestamp: { type: GraphQLString },
+        content: { type: GraphQLString }
     })
 })
 
@@ -61,6 +89,29 @@ const RootQuery = new GraphQLObjectType({
             }
         },
 
+        getChannel: {
+            type: ChannelType,
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return Channel.findById(args.id)
+            }
+        },
+
+        getUserChannels: {
+            type: GraphQLList(ChannelType),
+            args: {
+                id: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return (async () => {
+                    let {channels} = await User.findById(args.id)
+                    return await Channel.find({ _id: { $in: channels } })
+                })();
+            }
+        },
+
         client: {
             type: UserType,
             args: {},
@@ -76,6 +127,78 @@ const RootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
     name: "Mutation",
     fields: {
+        addMessage: {
+            type: ResponseType,
+            args: {
+                id: { type: GraphQLID },
+                sender: { type: GraphQLID },
+                timestamp: { type: GraphQLString },
+                content: { type: GraphQLString },
+                image: { type: GraphQLString }
+            },
+            resolve(parent, args) {
+                return (async() => {
+                    try {
+                        let document = await Channel.findById(args.id)
+                        document.messages.push({
+                            id: args.sender,
+                            content: args.content,
+                            image: args.image,
+                            timestamp: args.timestamp,
+                            reactions: []
+                        })
+                        await document.save()
+                        return statusRes("success", "Message posted")
+                    } catch (err) {
+                        return statusRes("error", err)
+                    }
+                    /**
+                     * messages: [{
+                        id: String,
+                        content: String,
+                        image: String,
+                        timestamp: String,
+                        reactions: [{
+                            by: String,
+                            icon: String
+                        }]
+                    }]
+                     */
+                })();
+            }
+        },
+
+        addChannel: {
+            type: ResponseType,
+            args: {
+                name: { type: GraphQLString },
+                picture: { type: GraphQLString }
+            },
+            resolve(parent, args, context) {
+                return (async () => {
+                    try {
+                        let creator = isValidToken(context.cookies.jwt);
+                        if (!creator) {
+                            return statusRes("error", "Unauthorized")
+                        }
+                        let channel = new Channel({
+                            owner: creator,
+                            name: args.name.trim(),
+                            picture: args.picture.trim(),
+                            members: [creator],
+                            messages: []
+                        })
+                        await channel.save()
+                        let user = await User.findById(creator)
+                        user.channels.push(channel._id)
+                        await user.save()
+                        return statusRes("success", "Channel created successfully")
+                    } catch (err) {
+                        return statusRes("error", err)
+                    }
+                })();
+            }
+        },
         
         login: {
             type: ResponseType,
@@ -91,9 +214,9 @@ const mutation = new GraphQLObjectType({
                     if (validator.isEmpty(args.password)) {
                         return statusRes("error", "Password is required")
                     }
-                    if (isValidToken(context.cookies.jwt)) {
+                    /*if (isValidToken(context.cookies.jwt)) {
                         return statusRes("error", "User is already logged in")
-                    }
+                    }*/
 
                     let user = await User.findOne({ email: args.email })
                     if (!user) {

@@ -9,12 +9,14 @@ const channelSchema = new mongoose.Schema({
     id: {
         type: mongoose.Schema.Types.ObjectId
     },
+    owner: String,
     name: String,
     picture: String,
     members: [String],
     messages: [{
-        sentBy: String,
+        id: String,
         content: String,
+        image: String,
         timestamp: String,
         reactions: [{
             by: String,

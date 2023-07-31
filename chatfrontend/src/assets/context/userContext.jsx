@@ -8,6 +8,7 @@ const GET_USER_BY_TOKEN = gql`
       username
       profilePicture
       headline
+      channels
     }
   }
 `;
@@ -19,6 +20,7 @@ const UserContextProvider = ({ children }) => {
 
   const [user, setUser] = React.useState({
     loggedIn: false,
+    id: null,
     username: "",
     profilePicture: "",
     headline: ""
