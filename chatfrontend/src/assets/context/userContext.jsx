@@ -4,6 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 const GET_USER_BY_TOKEN = gql`
   query GetUserByToken {
     client {
+      _id
       username
       profilePicture
       headline
@@ -29,6 +30,7 @@ const UserContextProvider = ({ children }) => {
     if (data && data.client) {
       setUser({
         loggedIn: true,
+        id: data.client._id,
         username: data.client.username,
         profilePicture: data.client.profilePicture,
         headline: data.client.headline
@@ -42,6 +44,7 @@ const UserContextProvider = ({ children }) => {
       if (data && data.client) {
         setUser({
           loggedIn: true,
+          id: data.client._id,
           username: data.client.username,
           profilePicture: data.client.profilePicture,
           headline: data.client.headline

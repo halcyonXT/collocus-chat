@@ -28,8 +28,11 @@ function App() {
         if (isLoading) {
             if (!loading) {
                 setTimeout(() => {
-                    setIsLoading(false)
-                }, 175)
+                    document.querySelector('.loading-screen').style.opacity = '0'
+                    setTimeout(() => {
+                        setIsLoading(false)
+                    }, 200)
+                }, 275)
             }
         }
     }, [loading])
@@ -39,11 +42,11 @@ function App() {
             {
                 isLoading
                 &&
-                <div className='absolute top-0 left-0 w-screen h-[100dvh] grid place-items-center bg-slate-950 animate-pulse z-50'>
+                <div className='loading-screen absolute top-0 left-0 w-screen h-[100dvh] grid place-items-center bg-slate-950 duration-200 z-[100]'>
                     <div className='h-20'>
                         <img
                             src={collopng}
-                            className='h-full'/>
+                            className='h-full animate-pulse'/>
                     </div>
                 </div>
             }

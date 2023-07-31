@@ -28,7 +28,6 @@ export default function UpperPanel(props) {
             setMenuLaunched(true)
         }
     }
-    console.log(user)
 
     if (isMobile) {
         return (
@@ -94,45 +93,9 @@ export default function UpperPanel(props) {
                         </div>
                     </div>
                 </div>
-                <div className='box-border w-[calc(100%-20rem)] max-w-[calc(100%-20rem)]  mx-4 overflow-y-hidden overflow-x-scroll flex gap-2 justify-start h-full pointer-events-auto'>
-
-                    
+                <div className='box-border w-[calc(100%-20rem)] max-w-[calc(100%-20rem)] ml-[0.66rem] overflow-y-hidden overflow-x-scroll flex gap-2 justify-start h-full pointer-events-auto'>
                     <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
-                    </div>
-                    <div className='h-full aspect-square rounded-full box-border border duration-100 cursor-pointer border-slate-500 hover:border-slate-300 grid place-items-center fill-slate-500 hover:fill-slate-300 text-lg leading-none'>
-                        Q
+                        <svg xmlns="http://www.w3.org/2000/svg" height="80%" viewBox="0 -960 960 960"><path d="M450-450H200v-60h250v-250h60v250h250v60H510v250h-60v-250Z"/></svg>
                     </div>
                 </div>
             </div>
