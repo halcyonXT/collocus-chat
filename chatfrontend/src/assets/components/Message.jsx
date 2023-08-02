@@ -12,16 +12,16 @@ export default function Message(props) {
                 <div className='h-max flex w-full max-w-full items-end gap-4'>
                     <img src={props.image} className='h-[40px] aspect-square rounded-full'></img>
                     <div className='h-full flex flex-col justify-evenly'>
-                        <div className={`text-slate-200 ${!isMobile ? 'text-[1rem]' : 'text-[15px]'} max-w-[65vw] font-semibold ysab overflow-hidden whitespace-nowrap text-ellipsis`}>
+                        <div className={`text-200 ${!isMobile ? 'text-[1rem]' : 'text-[15px]'} max-w-[65vw] font-semibold ysab overflow-hidden whitespace-nowrap text-ellipsis`}>
                             {props.name}
                         </div>
-                        <div className={`${!isMobile ? "text-[13px]" : "text-[12px]"} text-slate-500 leading-none quicksand`}>
+                        <div className={`${!isMobile ? "text-[13px]" : "text-[12px]"} text-500 leading-none quicksand`}>
                             {props.timestamp}
                         </div>
                     </div>
                 </div>
             }
-            <span className={`quicksand ${!isMobile ? "text-[1rem]" : 'text-[1rem]'} text-slate-300 ml-[20px] pl-[calc(20px+1rem)] whitespace-pre-wrap font-medium leading-8 border-l border-slate-500`}>
+            <span className={`quicksand ${!isMobile ? "text-[1rem]" : 'text-[1rem]'} text-300 ml-[20px] pl-[calc(20px+1rem)] whitespace-pre-wrap font-medium leading-8 border-l border-500`}>
                 {props.content}
             </span>
         </div>

@@ -7,6 +7,21 @@
   overscroll-behavior: none;
 }
 
+
+#root {
+  --50: rgb(248 250 252);
+  --100: rgb(241 245 249);
+  --200: rgb(226 232 240);
+  --300: rgb(203 213 225);
+  --400: rgb(148 163 184);
+  --500: rgb(100 116 139);
+  --600: rgb(71 85 105);
+  --700: rgb(51 65 85);
+  --800: rgb(30 41 59);
+  --900: rgb(15 23 42);
+  --950: rgb(2 6 23);
+}
+
 html {
     font-size: 16px !important;
     overflow: hidden;
@@ -213,10 +228,12 @@ select:-webkit-autofill:focus {
 
 @keyframes appear {
   from {
-    opacity: 0
+    opacity: 0;
+    transform: scale(0.9)
   }
   to {
-    opacity: 1
+    opacity: 1;
+    transform: scale(1)
   }
 }
 
@@ -224,7 +241,21 @@ select:-webkit-autofill:focus {
   animation: openModal 0.2s ease-in 0s 1 normal forwards;
 }
 
-.open-modal-content {
+#open-modal-content {
   opacity: 0;
   animation: appear 0.15s linear 0.2s 1 normal forwards;
+}
+
+@keyframes blur {
+  from {
+    backdrop-filter: blur(0px);
+    background: rgb(0,0,0,0);
+  }
+  to {
+    backdrop-filter: blur(3px);
+  }
+}
+
+.modal-background {
+  animation: blur 0.12s linear 0s 1 normal forwards;
 }

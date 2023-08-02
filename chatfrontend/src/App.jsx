@@ -42,7 +42,7 @@ function App() {
             {
                 isLoading
                 &&
-                <div className='loading-screen absolute top-0 left-0 w-screen h-[100dvh] grid place-items-center bg-slate-950 duration-200 z-[100]'>
+                <div className='loading-screen absolute top-0 left-0 w-screen h-[100dvh] grid place-items-center bg-950 duration-200 z-[100]'>
                     <div className='h-20'>
                         <img
                             src={collopng}
@@ -70,16 +70,16 @@ const Home = () => {
 
 
     return (
-        <div className="w-screen h-[100dvh] bg-slate-900 flex">
-                <div className="hidden p-3 h-full bg-slate-950 border-r border-slate-600 w-[18rem] md:flex md:flex-col">
+        <div className="w-screen h-[100dvh] bg-900 flex">
+                <div className="hidden p-3 h-full bg-950 border-r border-600 w-[18rem] md:flex md:flex-col">
                     <a href="/">
-                        <div className="w-full pb-3 h-8 max-h-8 mb-[1%] flex items-center justify-start gap-3 tracking-widest select-none border-b border-slate-700 box-content">
+                        <div className="w-full pb-3 h-8 max-h-8 mb-[1%] flex items-center justify-start gap-3 tracking-widest select-none border-b border-700 box-content">
                             <img src={collopng} className="h-full" />
                             <div className="ysab leading-none flex flex-col">
-                                <div className="clamp-title text-slate-300 font-black lg:leading-none md:leading-none decoration-0 text-[0.85rem]">
+                                <div className="clamp-title text-300 font-black lg:leading-none md:leading-none decoration-0 text-[0.85rem]">
                                     COLLOCUS
                                 </div>
-                                <div className="clamp-subtitle mt-1 text-slate-500 block text-[8px]">
+                                <div className="clamp-subtitle mt-1 text-500 block text-[8px]">
                                     CONNECTING PEOPLE, INSTANTLY
                                 </div>
                             </div>
@@ -133,16 +133,16 @@ const Home = () => {
 
 const loggedOutSidebar = 
     <>
-        <div className='w-full text-lg text-slate-500 quicksand box-border px-3 mt-3 text-center font-semibold'>
-            Join <span className='text-slate-200 ysab font-bold tracking-wide'>COLLOCUS</span> now! <br/>Chat in real-time and connect with people from all over the world, instantly.
+        <div className='w-full text-lg text-500 quicksand box-border px-3 mt-3 text-center font-semibold'>
+            Join <span className='text-200 ysab font-bold tracking-wide'>COLLOCUS</span> now! <br/>Chat in real-time and connect with people from all over the world, instantly.
         </div>
         <Link to="/login">
-            <div className='mt-6 py-1 font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
+            <div className='mt-6 py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-full text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
                 LOG IN
             </div>
         </Link>
         <Link to="/register">
-            <div className='mt-4 py-1 font-medium border border-slate-400 rounded-lg cursor-pointer text-center w-full text-slate-400 ysab tracking-widest text-base hover:text-slate-200 hover:border-slate-200 duration-150'>
+            <div className='mt-4 py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-full text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
                 SIGN UP
             </div>
         </Link>

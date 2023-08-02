@@ -1,5 +1,5 @@
 import React, { createContext, useEffect } from 'react';
-import { useLazyQuery, gql } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 import { UserContext } from './userContext';
 
 const GET_CHANNEL = gql`
@@ -45,24 +45,22 @@ const ChannelContextProvider = ({ children }) => {
         messages: [],
         owner: ""
     })
-    const [getUserChannels] = useLazyQuery(GET_USER_CHANNELS);
-    const [getChannel] = useLazyQuery(GET_CHANNEL);
+    const getUserChannels = useQuery(GET_USER_CHANNELS, {
+      variables: { id: user.id }, 
+      skip: true, 
+    });
 
-    const fetchUserChannels = async (reqid) => {
-        return await getUserChannels({ variables: { id: reqid } });
-    };
-
-    const fetchChannelData = async (reqid) => {
-        return await getChannel({ variables: { id: reqid } });
-    };
+    const getChannel = useQuery(GET_CHANNEL, {
+      variables: { id: focusedChannel }, 
+      skip: true, 
+    });
 
     React.useEffect(() => {
         if (!PASSED_INITIAL) {
             if (user.id) {
                 (async () => {
                     PASSED_INITIAL = true
-                    let raw = await fetchUserChannels(user.id)
-                    setChannels(raw.data.getUserChannels)
+                    updateUserChannels()
                 })();
             }
         }
@@ -71,15 +69,31 @@ const ChannelContextProvider = ({ children }) => {
     React.useEffect(() => {
         if (focusedChannel) {
             (async () => {
-                let raw = await fetchChannelData(focusedChannel)
-                console.log(raw.data.getChannel)
-                setExtensiveChannelInfo(raw.data.getChannel)
+                updateChannel()
             })();
         }
     }, [focusedChannel])
 
+    const updateUserChannels = async () => {
+      let raw = await getUserChannels.refetch()
+      setChannels(raw.data.getUserChannels)
+    }
+
+    const updateChannel = async () => {
+      let raw = await getChannel.refetch()
+      setExtensiveChannelInfo(raw.data.getChannel)
+    }
+
     return (
-        <ChannelContext.Provider value={{focusedChannel,setFocusedChannel,channels,extensiveChannelInfo}}>
+        <ChannelContext.Provider value={{
+          focusedChannel,
+          setFocusedChannel,
+          channels,
+          extensiveChannelInfo,
+          update: {
+            userChannels: updateUserChannels,
+            channel: updateChannel 
+          }}}>
             {children}
         </ChannelContext.Provider>
     );

@@ -1,17 +1,7 @@
 import React, { createContext, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 
-const GET_USER_BY_TOKEN = gql`
-  query GetUserByToken {
-    client {
-      _id
-      username
-      profilePicture
-      headline
-      channels
-    }
-  }
-`;
+import { GET_USER_BY_TOKEN } from '../api/api';
 
 const UserContext = createContext();
 

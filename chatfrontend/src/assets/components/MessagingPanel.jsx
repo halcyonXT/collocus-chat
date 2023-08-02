@@ -7,15 +7,10 @@ import { UserContext } from '../context/userContext';
 import { ChannelContext } from '../context/channelContext';
 import ChannelModal from './ChannelModal';
 import { useMutation, gql } from '@apollo/client';
+import Modal from './Modal';
+import ProfileModal from './ProfileModal';
 
-const ADD_MESSAGE = gql`
-  mutation AddMessage($id: ID!, $sender: ID!, $timestamp: String!, $content: String!, $image: String) {
-    addMessage(id: $id, sender: $sender, timestamp: $timestamp, content: $content, image: $image) {
-      status
-      message
-    }
-  }
-`;
+import { ADD_MESSAGE } from '../api/api';
 
 /******************************************************* */
 function getCurrentDateString() {
@@ -73,6 +68,7 @@ export default function MessagingPanel(props) {
     const [zoomLevel, setZoomLevel] = React.useState(100);
     const [messages, setMessages] = React.useState([])
     const [channelModalOpen, setChannelModalOpen] = React.useState(false)
+    const [profileModalOpen, setProfileModalOpen] = React.useState(false)
     let {focusedChannel, setFocusedChannel, extensiveChannelInfo} = React.useContext(ChannelContext)
     const [addMessage] = useMutation(ADD_MESSAGE);
     const messagesRef = React.useRef(null)
@@ -113,7 +109,6 @@ export default function MessagingPanel(props) {
 
     const renderMessages = (() => {
         let arr = []
-        console.log(messages)
         const templateMessage = (item, chain = "none") => {
             return (<Message
                 name={item.sender?.username}
@@ -192,20 +187,43 @@ export default function MessagingPanel(props) {
             {
                 channelModalOpen
                 &&
-                <ChannelModal setChannelModalOpen={setChannelModalOpen}/>
+                <Modal tether={channelModalOpen} setTether={setChannelModalOpen}>
+                    <ChannelModal/>
+                </Modal>
+            }
+            {
+                profileModalOpen
+                &&
+                <Modal setTether={setProfileModalOpen}>
+                    <ProfileModal/>
+                </Modal>
             }
             <div className={`w-full relative max-w-full md:w-[calc(100%-18rem)] md:max-w-[calc(100%-18rem)] flex flex-col justify-end h-full`}>
-                <UpperPanel setChannelModalOpen={setChannelModalOpen} changeChannels={changeChannels}/>
+                <UpperPanel setProfileModalOpen={setProfileModalOpen} setChannelModalOpen={setChannelModalOpen} changeChannels={changeChannels}/>
                 <div ref={messagesRef} className='overflow-y-scroll overflow-x-hidden flex-1 w-full p-[3%] px-[1%] md:p-[1%] md:px-8 box-border flex justify-start flex-col pb-0 md:pb-0'>
                     <div className='w-full grow'></div>
                     {
+                        focusedChannel
+                        ?
                         renderMessages
+                        :
+                        <div className='w-full min-w-full flex flex-col justify-center items-center mb-8'>
+                            <div className='text-600 quicksand text-2xl'>
+                                Welcome to
+                            </div>
+                            <div className='text-500 ysab font-bold text-3xl tracking-[0.05em]'>
+                                COLLOCUS
+                            </div>
+                            <div className='text-600 quicksand text-2xl'>
+                                Select a channel to start chatting in
+                            </div>
+                        </div>
                     }
                     <div className='bottom-filler w-full max-h-[21vh]'></div>
                 </div>
                 
                 <div className='absolute right-0 bottom-0 w-full min-h-[7%] h-max max-h-[15rem] bg-[linear-gradient(0deg,#0f172a,transparent)] grid place-items-center box-border p-2'>
-                    <div className='bg-slate-950 md:w-[98%] w-full h-[90%] border border-slate-700 rounded-[1vh] box-border my-[0.5%] py-1 px-6 md:px-4 flex justify-start items-center'>
+                    <div className='bg-950 md:w-[98%] w-full h-[90%] border border-700 rounded-[1vh] box-border my-[0.5%] py-1 px-6 md:px-4 flex justify-start items-center'>
                         <form onSubmit={handleSendMessage} className='form-input grow h-max'>
                             <textarea className={`
                                 main-input 
@@ -224,9 +242,10 @@ export default function MessagingPanel(props) {
                                 bg-transparent 
                                 quicksand 
                                 grow 
-                                text-slate-300 
-                                placeholder:text-slate-600 
-                                focus:border-slate-300
+                                text-300 
+                                placeholder:text-600 
+                                focus:border-300
+                                font-medium
                                 outline-none 
                                 flex justify-start items-center`}
                             placeholder={focusedChannel ? `Message channel ${focusedChannel}` : `Select a channel to chat`} 
@@ -236,7 +255,7 @@ export default function MessagingPanel(props) {
                             onInput={reheight}
                             onKeyDown={detectKey}></textarea>
                         </form>
-                        <div className={`h-9 duration-200 aspect-square ${messageInput ? "fill-slate-400" : "fill-slate-600"} hover:fill-slate-300 grid place-items-center cursor-pointer`} onClick={handleSendMessage}>
+                        <div className={`h-9 duration-200 aspect-square ${messageInput ? "fill-400" : "fill-600"} hover:fill-300 grid place-items-center cursor-pointer`} onClick={handleSendMessage}>
                             <svg xmlns="http://www.w3.org/2000/svg" height="85%" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg>
                         </div>
                     </div>

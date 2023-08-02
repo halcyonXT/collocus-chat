@@ -127,6 +127,48 @@ const RootQuery = new GraphQLObjectType({
 const mutation = new GraphQLObjectType({
     name: "Mutation",
     fields: {
+        mutateUser: {
+            type: ResponseType,
+            args: {
+                key: { type: GraphQLString },
+                value: { type: GraphQLString }
+            },
+            resolve(parent, args, context) {
+                return (async () => {
+                    try {
+                        let user = await User.findById(isValidToken(context.cookies.jwt));
+                        user[args.key] = args.value;
+                        await user.save()
+                        return statusRes("success", `Applied \"${args.value}\" to \"${args.key}\"`)
+                    } catch (err) {
+                        return statusRes("error", err)
+                    }
+
+                })();
+            }
+        },
+        addUserToChannel: {
+            type: ResponseType,
+            args: {
+                id: { type: GraphQLID },
+                channel: { type: GraphQLID }
+            },
+            resolve(parent, args) {
+                return (async () => {
+                    try {
+                        let channel = await Channel.findById(args.channel);
+                        let user = await User.findById(args.id);
+                        user.channels.push(args.channel);
+                        channel.members.push(args.id);
+                        await user.save()
+                        await channel.save()
+                        return statusRes("success", "User added to channel")
+                    } catch (err) {
+                        return statusRes("error", err)
+                    }
+                })();
+            }
+        },
         addMessage: {
             type: ResponseType,
             args: {
@@ -216,7 +258,7 @@ const mutation = new GraphQLObjectType({
                     }
                     /*if (isValidToken(context.cookies.jwt)) {
                         return statusRes("error", "User is already logged in")
-                    }*/
+                    } Causing some issues*/
 
                     let user = await User.findOne({ email: args.email })
                     if (!user) {
