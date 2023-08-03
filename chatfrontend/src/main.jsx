@@ -17,16 +17,16 @@ const client = new ApolloClient({
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <ApolloProvider client={client}>
-        <BrowserRouter>
-            <UserContextProvider>
-                <ChannelContextProvider>
-                    <SocketProvider>
-                        <PhoneContextProvider>
-                            <App />
-                        </PhoneContextProvider>
-                    </SocketProvider>
-                </ChannelContextProvider>
-            </UserContextProvider>
-        </BrowserRouter>
+        <SocketProvider>
+            <BrowserRouter>
+                <UserContextProvider>
+                    <ChannelContextProvider>
+                            <PhoneContextProvider>
+                                <App />
+                            </PhoneContextProvider>
+                    </ChannelContextProvider>
+                </UserContextProvider>
+            </BrowserRouter>
+        </SocketProvider>
     </ApolloProvider>
 )

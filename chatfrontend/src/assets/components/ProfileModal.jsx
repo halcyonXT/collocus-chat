@@ -119,7 +119,7 @@ const ChangeHeadline = (props) => {
     )
 }
 
-const AnimatableWrapper = (props) => <div className='w-full flex-col overflow-y-auto items-start justify-start h-max absolute left-[calc(100%+1rem)] opacity-0 top-0' id={props.id}>{props.children}</div>
+const AnimatableWrapper = (props) => <div className='w-full flex-col items-start justify-start h-max absolute left-[calc(100%+1rem)] opacity-0 top-0' id={props.id}>{props.children}</div>
 
 const animateTo = (id, direction = 'forwards') => {
     let replaced = document.querySelector('#profile-modal')

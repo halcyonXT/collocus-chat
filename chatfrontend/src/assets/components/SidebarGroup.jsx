@@ -32,7 +32,7 @@ export default function SidebarGroup(props) {
 
     return (
         <>
-            <div onClick={handleClick} className={`flex my-2 pt-2 duration-100 select-none justify-start items-center box-content h-5 text-[14px] pb-2 fill-300 text-300 hover:fill-100 hover:text-100 ysab font-semibold cursor-pointer`}>
+            <div onClick={handleClick} className={`flex my-2 pt-2 text-base duration-100 select-none justify-start items-center box-content h-6 text-[14px] pb-2 fill-300 text-300 hover:fill-100 hover:text-100 ysab font-semibold cursor-pointer`}>
                 <svg xmlns="http://www.w3.org/2000/svg" className={`duration-100 xl:mr-3 lg:mr-2 md:mr-2 ${activeAnimation !== "ddexpand" && '-rotate-90'}`} height="100%" viewBox="0 -960 960 960"><path d="M480-360 280-559h400L480-360Z"/></svg>
                 {props.icon}
                 {props.title}

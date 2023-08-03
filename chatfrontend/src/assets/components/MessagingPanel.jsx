@@ -52,12 +52,16 @@ function processDateString(dateString) {
 }
 
 function getFormattedTime(date) {
-    const hours = String(date.getHours()).padStart(2, '0');
+    let hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const ampm = hours >= 12 ? 'PM' : 'AM';
+    hours = hours > 12 ? ~~(hours % 12) : hours
     return `${hours}:${minutes} ${ampm}`;
 }
 /**************************************************** */
+
+let timer = null;
+let ableToEmit = true;
 
 export default function MessagingPanel(props) {
 
@@ -67,6 +71,7 @@ export default function MessagingPanel(props) {
     const [messageInput, setMessageInput] = React.useState('')
     const [zoomLevel, setZoomLevel] = React.useState(100);
     const [messages, setMessages] = React.useState([])
+    const [typing, setTyping] = React.useState([])
     const [channelModalOpen, setChannelModalOpen] = React.useState(false)
     const [profileModalOpen, setProfileModalOpen] = React.useState(false)
     let {focusedChannel, setFocusedChannel, extensiveChannelInfo} = React.useContext(ChannelContext)
@@ -101,10 +106,17 @@ export default function MessagingPanel(props) {
             setMessages(prev => [...prev, msg])
         })
 
+        socket.on("startTyping", info => {
+            setTyping(prev => [...prev, {name: info.name, id: info.id}])
+        })
 
-          return () => {
+        socket.on("endTyping", info => {
+            setTyping(prev => prev.filter(item => item.id !== info.id))
+        })
+
+        return () => {
             window.removeEventListener('resize', handleResize);
-          };
+        };
     }, [])
 
     const renderMessages = (() => {
@@ -150,15 +162,27 @@ export default function MessagingPanel(props) {
             timestamp: getCurrentDateString(),
             content: messageInput
         }));
-        console.log(focusedChannel, user.id, getCurrentDateString(), messageInput, user.profilePicture)
         let m = await addNewMessage(focusedChannel, user.id, getCurrentDateString(), messageInput, user.profilePicture)
-        console.log(m)
         setMessageInput('');
         reheight()
     }
 
     const handleChange = (e) => {
-        
+        clearTimeout(timer)
+        if (ableToEmit) {
+            socket.emit("startTyping", {
+                name: user.username,
+                id: user.id
+            })
+            ableToEmit = false
+        }
+        timer = setTimeout(() => {
+            ableToEmit = true
+            socket.emit("endTyping", {
+                name: user.username,
+                id: user.id
+            })
+        }, 3000)
         setMessageInput(e.target.value)
     }
 
@@ -175,12 +199,14 @@ export default function MessagingPanel(props) {
 
     const reheight = () => {
         let el = document.querySelector('.main-input')
+        let pointer = document.querySelector('.filler-pointer')
         el.style.height = '1px'
-        document.querySelector('.bottom-filler').style.height = `${el.scrollHeight + 30}px`
-        document.querySelector('.bottom-filler').style.minHeight = `min(${el.scrollHeight + 30}px, 21dvh)`
+        document.querySelector('.bottom-filler').style.height = `${el.scrollHeight + 35}px`
+        document.querySelector('.bottom-filler').style.minHeight = `min(${el.scrollHeight + 35}px, 22.5dvh)`
         el.style.height = `${el.scrollHeight}px`
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
     }
+
 
     return (
         <>
@@ -222,8 +248,8 @@ export default function MessagingPanel(props) {
                     <div className='bottom-filler w-full max-h-[21vh]'></div>
                 </div>
                 
-                <div className='absolute right-0 bottom-0 w-full min-h-[7%] h-max max-h-[15rem] bg-[linear-gradient(0deg,#0f172a,transparent)] grid place-items-center box-border p-2'>
-                    <div className='bg-950 md:w-[98%] w-full h-[90%] border border-700 rounded-[1vh] box-border my-[0.5%] py-1 px-6 md:px-4 flex justify-start items-center'>
+                <div className='filler-pointer absolute right-0 bottom-0 w-full min-h-[7%] h-max max-h-[15rem] bg-[linear-gradient(0deg,var(--950),transparent)] flex justify-center align-end box-border p-2'>
+                    <div className='bg-950 md:w-[98%] py-1 w-full h-[85%] border border-700 rounded-[1vh] box-border mt-[0.5%] mb-4 px-6 md:px-4 flex justify-start items-center'>
                         <form onSubmit={handleSendMessage} className='form-input grow h-max'>
                             <textarea className={`
                                 main-input 
@@ -236,7 +262,7 @@ export default function MessagingPanel(props) {
                                 max-h-[19vh] 
                                 h-7 
                                 resize-none 
-                                overflow-y-hidden 
+                                overflow-y-auto 
                                 w-full 
                                 border-none 
                                 bg-transparent 
@@ -248,13 +274,27 @@ export default function MessagingPanel(props) {
                                 font-medium
                                 outline-none 
                                 flex justify-start items-center`}
-                            placeholder={focusedChannel ? `Message channel ${focusedChannel}` : `Select a channel to chat`} 
+                            placeholder={focusedChannel ? `Message channel ${extensiveChannelInfo.name}` : `Select a channel to chat`} 
                             spellCheck="false"
                             value={messageInput}
                             onChange={handleChange}
                             onInput={reheight}
                             onKeyDown={detectKey}></textarea>
                         </form>
+                        {
+                            typing.length > 0
+                            &&
+                            <div className='absolute bottom-[0.07rem] text-sm ysab font-light text-400 flex'>
+                                <div className='flex gap-2 animate-pulse'>
+                                    ●●●
+                                </div>
+                                &nbsp;
+                                <span className='font-semibold'>
+                                    {typing.map(item => `${item.name}`).join(", ")}
+                                </span>
+                                &nbsp;{typing.length === 1 ? "is " : "are "}typing
+                            </div>
+                        }
                         <div className={`h-9 duration-200 aspect-square ${messageInput ? "fill-400" : "fill-600"} hover:fill-300 grid place-items-center cursor-pointer`} onClick={handleSendMessage}>
                             <svg xmlns="http://www.w3.org/2000/svg" height="85%" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg>
                         </div>
