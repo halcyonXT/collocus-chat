@@ -58,6 +58,46 @@ const LOGIN_USER = gql`
   }
 `;
 
+const GET_USERS_BY_IDS = gql`
+  query GetUsersByIds($ids: [ID!]!) {
+    users(ids: $ids) {
+      _id
+      username
+      profilePicture
+    }
+  }
+`;
+
+const GET_CHANNEL = gql`
+  query GetChannel($id: ID!) {
+    getChannel(id: $id) {
+      owner
+      picture
+      name
+      members
+      messages {
+        sender {
+          _id
+          username
+          profilePicture
+        }
+        timestamp
+        content
+      }
+    }
+  }
+`;
+
+const GET_USER_CHANNELS = gql`
+  query GetUserChannels($id: ID!) {
+    getUserChannels(id: $id) {
+      _id
+      name
+      picture
+    }
+  }
+`;
+
 
 export {
     GET_USER_BY_TOKEN,
@@ -65,5 +105,8 @@ export {
     ADD_USER_TO_CHANNEL_MUTATION,
     ADD_MESSAGE,
     REGISTER_USER,
-    LOGIN_USER
+    LOGIN_USER,
+    GET_USERS_BY_IDS,
+    GET_USER_CHANNELS,
+    GET_CHANNEL
 }

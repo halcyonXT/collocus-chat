@@ -9,23 +9,37 @@
 
 
 #root {
-  --50: rgb(248 250 252);
-  --100: rgb(241 245 249);
-  --200: rgb(226 232 240);
-  --300: rgb(203 213 225);
-  --400: rgb(148 163 184);
-  --500: rgb(100 116 139);
-  --600: rgb(71 85 105);
-  --700: rgb(51 65 85);
-  --800: rgb(30 41 59);
-  --900: rgb(15 23 42);
-  --950: rgb(2 6 23);
+  --50: rgb(250 250 250);
+  --100: rgb(244 244 245);
+  --200: rgb(228 228 231);
+  --300: rgb(212 212 216);
+  --400: rgb(161 161 170);
+  --500: rgb(113 113 122);
+  --600: rgb(82 82 91);
+  --700: rgb(63 63 70);
+  --800: rgb(39 39 42);
+  --900: rgb(24 24 27);
+  --950: rgb(9 9 11);
 }
+
+/*
+--950: rgb(250 250 250);
+--900: rgb(244 244 245);
+--800: rgb(228 228 231);
+--700: rgb(212 212 216);
+--600: rgb(161 161 170);
+--500: rgb(113 113 122);
+--400: rgb(82 82 91);
+--300: rgb(63 63 70);
+--200: rgb(39 39 42);
+--100: rgb(24 24 27);
+--50: rgb(9 9 11);
+*/
 
 html {
     font-size: 16px !important;
     overflow: hidden;
-    background-color: #030617;
+    background-color: var(--900);
 }
 
 .ysab  {
@@ -72,13 +86,13 @@ html {
   
   /* Full-rounded thumb */
   ::-webkit-scrollbar-thumb {
-    background-color: #324154;
+    background-color: var(--700);
     border-radius: 3px;
     transition-duration: 0.15s;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background-color: #44566e;
+    background-color: var(--600);
   }
 
   .popout-animation {
@@ -214,7 +228,7 @@ select:-webkit-autofill:focus {
   -moz-transition-duration: 0ms;
   -webkit-transition-duration: 0ms;
   -webkit-text-fill-color: #cfcbc3;
-  -webkit-box-shadow: 0 0 0px 1000px #030617 inset;
+  -webkit-box-shadow: 0 0 0px 1000px var(--950) inset;
 }
 
 @keyframes openModal {

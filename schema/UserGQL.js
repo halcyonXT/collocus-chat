@@ -74,8 +74,13 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         users: {
             type: new GraphQLList(UserType),
+            args: {
+                ids: { type: GraphQLList(GraphQLID) }
+            },
             resolve(parent, args) {
-                return User.find();
+                return (async () => {
+                    return await User.find({ _id: { $in: args.ids } })
+                })();
             }
         },
 

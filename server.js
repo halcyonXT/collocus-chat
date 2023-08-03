@@ -53,18 +53,87 @@ const io = socketio(server, {
     },
 });
 
+let channels = {
+
+}
+
+let users = {
+
+}
+
+const statusReport = (status, message) => {
+    if (status == "info") {
+        console.log(`[info] ${message}`.cyan.bold)
+    } else if (status == "success") {
+        console.log(`[success] ${message}`.green.bold)
+    } else if (status == "error") {
+        console.log(`[error] ${message}`.red.bold)
+    }
+}
 
 io.on('connection', socket => {
-    console.log('[info] New WS connection...'.cyan.bold)
+    statusReport("info", "New WS connection")
 
     socket.broadcast.emit('info', 'A user has joined the chat');
 
     socket.on('chatMessage', msg => {
-        io.emit("message", msg)
+        let channel = ""
+        if (users[socket.id]) {
+            channel = users[socket.id]
+        } else return
+        if (channels[channel]) {
+            channels[channel].forEach(client => {
+                io.to(client).emit("message", msg);
+            })
+        }
     })
 
+    socket.on('startTyping', info => {
+        if (users[socket.id]) {
+            channels[users[socket.id]].forEach(client => {
+                if (client !== socket.id) {
+                    io.to(client).emit('startTyping', {
+                        name: info.name,
+                        id: info.id
+                    })
+                }
+            })
+        }
+    })
+
+    socket.on('endTyping', info => {
+        if (users[socket.id]) {
+            channels[users[socket.id]].forEach(client => {
+                if (client !== socket.id) {
+                    io.to(client).emit('endTyping', {
+                        name: info.name,
+                        id: info.id
+                    })
+                }
+            })
+        }
+    })
+
+    socket.on('joinChannel', (channelId) => {
+        socket.join(channelId);
+        statusReport("info", `User ${socket.id} joined ${channelId}`)
+        if (!channels[channelId]) {
+          channels[channelId] = [];
+        }
+        if (!users[socket.id]) {
+            users[socket.id] = channelId
+        } else {
+            channels[users[socket.id]] = channels[users[socket.id]].filter(id => id !== socket.id)
+            users[socket.id] = channelId
+        }
+        channels[channelId].push(socket.id);
+    });
+
     socket.on('disconnect', () => {
-        io.emit('info', 'A user has left the chat')
+        if (users[socket.id]) {
+            channels[users[socket.id]].filter(id => id !== socket.id);
+            delete users[socket.id];
+        }
     })
 })
 

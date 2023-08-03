@@ -1,33 +1,9 @@
 import React, { createContext, useEffect } from 'react';
 import { useQuery, gql } from '@apollo/client';
 import { UserContext } from './userContext';
+import { SocketContext } from './socketContext';
 
-const GET_CHANNEL = gql`
-  query GetChannel($id: ID!) {
-    getChannel(id: $id) {
-      owner
-      messages {
-        sender {
-          _id
-          username
-          profilePicture
-        }
-        timestamp
-        content
-      }
-    }
-  }
-`;
-
-const GET_USER_CHANNELS = gql`
-  query GetUserChannels($id: ID!) {
-    getUserChannels(id: $id) {
-      _id
-      name
-      picture
-    }
-  }
-`;
+import { GET_CHANNEL, GET_USER_CHANNELS, GET_USERS_BY_IDS } from '../api/api'
 
 
 const ChannelContext = createContext();
@@ -38,16 +14,21 @@ const ChannelContextProvider = ({ children }) => {
     const { user } = React.useContext(UserContext)
     const [focusedChannel, setFocusedChannel] = React.useState(null)
     const [channels, setChannels] = React.useState([])
+    const {socket} = React.useContext(SocketContext)
     const [extensiveChannelInfo, setExtensiveChannelInfo] = React.useState({
-        name: "",
-        picture: "",
-        members: [],
-        messages: [],
-        owner: ""
+      name: "",
+      picture: "",
+      members: [],
+      messages: [],
+      owner: ""
     })
     const getUserChannels = useQuery(GET_USER_CHANNELS, {
       variables: { id: user.id }, 
       skip: true, 
+    });
+    const membersQuery = useQuery(GET_USERS_BY_IDS, {
+      variables: { ids: extensiveChannelInfo.members },
+      skip: true
     });
 
     const getChannel = useQuery(GET_CHANNEL, {
@@ -68,11 +49,25 @@ const ChannelContextProvider = ({ children }) => {
 
     React.useEffect(() => {
         if (focusedChannel) {
+            socket.emit('joinChannel', focusedChannel);
             (async () => {
                 updateChannel()
             })();
         }
     }, [focusedChannel])
+
+    React.useEffect(() => {
+      if (extensiveChannelInfo.members.length > 0 && typeof extensiveChannelInfo.members[0] !== 'object') {
+        ;(async() => {
+          let raw = await membersQuery.refetch()
+          setExtensiveChannelInfo(prev => {
+            let r = {...prev}
+            r.members = raw.data.users
+            return r
+          })
+        })();
+      }
+    }, [extensiveChannelInfo])
 
     const updateUserChannels = async () => {
       let raw = await getUserChannels.refetch()
