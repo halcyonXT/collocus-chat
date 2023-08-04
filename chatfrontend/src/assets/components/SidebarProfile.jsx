@@ -1,10 +1,24 @@
 import React from 'react'
 
+let timer;
+
 export default function SidebarProfile(props) {
+    const copyToClipboard = () => navigator.clipboard.writeText(props.id);
 
     const [hovered, setHovered] = React.useState(false)
+    const [clicked, setClicked] = React.useState(false)
 
-    return (
+    const handleCopyLink = () => {
+        clearTimeout(timer)
+        setClicked(true)
+        copyToClipboard()
+
+        timer = setTimeout(() => {
+            setClicked(false)
+        }, 3500)
+    }
+
+    if (!props.svg) {return (
         <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)} className='w-full py-1 flex cursor-pointer items-center select-none mb-2 justify-start gap-2 duration-150 rounded-full box-content hover:bg-900 h-6'>
             <img src={props.image} className='h-full rounded-full ml-1 aspect-square'></img>
             <span className='grow ml-2 quicksand overflow-hidden whitespace-nowrap text-ellipsis text-400 leading-5 text-base'>
@@ -22,5 +36,28 @@ export default function SidebarProfile(props) {
                 </>
             }
         </div>
+    )} else {return (
+        <div onClick={handleCopyLink} className={`w-full py-1 flex cursor-pointer items-center mb-2 justify-start gap-2 duration-150 rounded-full box-content ${clicked ? 'bg-green-500' : 'hover:bg-900'} h-6 fill-500 hover:fill-300 text-500 hover:text-300`}>
+            <div className='h-full aspect-square ml-2'>
+                {
+                    clicked
+                    ?
+                    <svg xmlns="http://www.w3.org/2000/svg" height="100%" className='fill-100' viewBox="0 -960 960 960"><path d="m421-298 283-283-46-45-237 237-120-120-45 45 165 166Zm59 218q-82 0-155-31.5t-127.5-86Q143-252 111.5-325T80-480q0-83 31.5-156t86-127Q252-817 325-848.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 82-31.5 155T763-197.5q-54 54.5-127 86T480-80Zm0-60q142 0 241-99.5T820-480q0-142-99-241t-241-99q-141 0-240.5 99T140-480q0 141 99.5 240.5T480-140Zm0-340Z"/></svg>
+                    :
+                    props.svg
+                }
+            </div>
+            <span className={`grow ml-2 quicksand overflow-hidden whitespace-nowrap text-ellipsis ${clicked ? 'text-100' : 'text-400'} leading-5 text-base`}>
+                {
+                    clicked
+                    ?
+                    "Copied channel ID"
+                    :
+                    props.name
+                }
+            </span>
+        </div>
     )
+
+    }
 }

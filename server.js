@@ -76,6 +76,14 @@ io.on('connection', socket => {
 
     socket.broadcast.emit('info', 'A user has joined the chat');
 
+    socket.on('newMember', obj => {
+        if (channels[obj.channel]) {
+            channels[obj.channel].forEach(client => {
+                io.to(client).emit("newMember", obj.user)
+            })
+        }
+    })
+
     socket.on('chatMessage', msg => {
         let channel = ""
         if (users[socket.id]) {
