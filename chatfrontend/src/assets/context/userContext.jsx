@@ -48,7 +48,7 @@ const UserContextProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{user, updateUser, loading}}>
+    <UserContext.Provider value={{user, updateUser, setUser, loading}}>
       {children}
     </UserContext.Provider>
   );

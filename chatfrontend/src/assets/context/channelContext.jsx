@@ -49,7 +49,10 @@ const ChannelContextProvider = ({ children }) => {
 
     React.useEffect(() => {
         if (focusedChannel) {
-            socket.emit('joinChannel', focusedChannel);
+            socket.emit('joinChannel', {
+              channel: focusedChannel,
+              clientSideID: user.id
+            });
             (async () => {
                 updateChannel()
             })();
