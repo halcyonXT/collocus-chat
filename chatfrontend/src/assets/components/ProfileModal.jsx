@@ -76,19 +76,19 @@ const General = (props) => {
             </div>
             <div className='h-full flex flex-col justify-start w-[calc(100%-4rem)]'>
                 <div>
-                    <div className='text-500 quicksand text-[8px] leading-none'>
+                    <div className='text-700 quicksand text-[8px] leading-none'>
                         User ID: {user.id}
                     </div>
                 </div>
                 <div>
-                    <div onClick={() => animateTo("change-username")} className='flex fill-500 hover:fill-300 items-center duration-200 cursor-pointer gap-2'>
-                        <div className='text-300 ysab font-bold text-xl text-ellipsis whitespace-nowrap overflow-hidden max-w-[80%]'>
+                    <div onClick={() => animateTo("change-username")} className='flex fill-600 hover:brightness-125 items-center duration-200 cursor-pointer gap-2'>
+                        <div className='text-accent ysab font-bold text-xl text-ellipsis whitespace-nowrap overflow-hidden max-w-[80%]'>
                             {user.username}
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" height="0.9rem" viewBox="0 -960 960 960"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg>
                     </div>
-                    <div onClick={() => animateTo("change-headline")} className='flex fill-500 hover:fill-300 items-center duration-200 cursor-pointer gap-2'>
-                        <div className='text-500 text-base quicksand leading-none text-ellipsis whitespace-nowrap overflow-hidden max-w-[80%]'>
+                    <div onClick={() => animateTo("change-headline")} className='flex fill-600 hover:brightness-125 items-center duration-200 cursor-pointer gap-2'>
+                        <div className='text-600 text-base quicksand leading-none text-ellipsis whitespace-nowrap overflow-hidden max-w-[80%]'>
                             {user.headline}
                         </div>
                         <svg xmlns="http://www.w3.org/2000/svg" height="0.8rem" viewBox="0 -960 960 960"><path d="M180-180h44l443-443-44-44-443 443v44Zm614-486L666-794l42-42q17-17 42-17t42 17l44 44q17 17 17 42t-17 42l-42 42Zm-42 42L248-120H120v-128l504-504 128 128Zm-107-21-22-22 44 44-22-22Z"/></svg>
@@ -128,7 +128,7 @@ const ChangeUsername = (props) => {
     return (
         <AnimatableWrapper id="change-username">
             <>
-                <div className='ysab text-lg text-300 font-semibold pb-1'>
+                <div className='ysab text-lg text-accent font-semibold pb-1'>
                     Set a new username:
                 </div>
                 <Input
@@ -137,7 +137,7 @@ const ChangeUsername = (props) => {
                     callback={handleChangeUsername}
                     name="Username"
                 />
-                <div className='ysab text-lg text-300 font-semibold pt-4'>
+                <div className='ysab text-lg text-accent font-semibold pt-4'>
                     Confirm password:
                 </div>
                 <Input
@@ -147,10 +147,10 @@ const ChangeUsername = (props) => {
                     name="Password"
                 />
                 <div className='pt-4 flex justify-between items-center'>
-                    <div onClick={() => animateTo("change-username", "backwards")} className='py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-[48%] text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
+                    <div onClick={() => animateTo("change-username", "backwards")} className='py-1 font-medium border border-600 rounded-lg cursor-pointer text-center w-[48%] text-600 ysab tracking-widest text-base hover:brightness-125 duration-150'>
                         BACK
                     </div>
-                    <div className='py-1 bg-400 font-medium border border-400 rounded-lg cursor-pointer text-center w-[48%] text-950 ysab tracking-widest text-base hover:bg-200 hover:border-200 duration-150'>
+                    <div className='py-1 bg-400 font-medium bg-accent rounded-lg cursor-pointer text-center w-[48%] text-900 ysab tracking-widest text-base hover:brightness-125 duration-150'>
                         PROCEED
                     </div>
                 </div>
@@ -167,20 +167,20 @@ const ChangeHeadline = (props) => {
     return (
         <AnimatableWrapper id="change-headline">
             <>
-                <div className='ysab text-lg text-300 font-semibold pb-1'>
+                <div className='ysab text-lg text-accent font-semibold pb-1'>
                     Set a new headline:
                 </div>
                 <Input
-                    id="change-username-input"
+                    id="change-headline-input"
                     tether={headline}
                     callback={handleChangeHeadline}
-                    name="Username"
+                    name="Headline"
                 />
                 <div className='pt-4 flex justify-between items-center'>
-                    <div onClick={() => animateTo("change-headline", "backwards")} className='py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-[48%] text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
+                    <div onClick={() => animateTo("change-headline", "backwards")} className='py-1 font-medium border border-600 rounded-lg cursor-pointer text-center w-[48%] text-600 ysab tracking-widest text-base hover:brightness-125 duration-150'>
                         BACK
                     </div>
-                    <div className='py-1 bg-400 font-medium border border-400 rounded-lg cursor-pointer text-center w-[48%] text-950 ysab tracking-widest text-base hover:bg-200 hover:border-200 duration-150'>
+                    <div className='py-1 bg-400 font-medium bg-accent rounded-lg cursor-pointer text-center w-[48%] text-900 ysab tracking-widest text-base hover:brightness-125 duration-150'>
                         PROCEED
                     </div>
                 </div>
