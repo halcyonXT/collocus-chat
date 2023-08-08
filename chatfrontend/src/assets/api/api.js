@@ -98,6 +98,14 @@ const GET_USER_CHANNELS = gql`
   }
 `;
 
+const MUTATE_USER = gql`
+  mutation MutateUser($key: String!, $value: String!) {
+    mutateUser(key: $key, value: $value) {
+      status
+      message
+    }
+  }
+`;
 
 export {
     GET_USER_BY_TOKEN,
@@ -108,5 +116,6 @@ export {
     LOGIN_USER,
     GET_USERS_BY_IDS,
     GET_USER_CHANNELS,
-    GET_CHANNEL
+    GET_CHANNEL,
+    MUTATE_USER
 }

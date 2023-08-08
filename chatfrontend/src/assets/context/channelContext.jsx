@@ -49,7 +49,10 @@ const ChannelContextProvider = ({ children }) => {
 
     React.useEffect(() => {
         if (focusedChannel) {
-            socket.emit('joinChannel', focusedChannel);
+            socket.emit('joinChannel', {
+              channel: focusedChannel,
+              clientSideID: user.id
+            });
             (async () => {
                 updateChannel()
             })();
@@ -59,12 +62,7 @@ const ChannelContextProvider = ({ children }) => {
     React.useEffect(() => {
       if (extensiveChannelInfo.members.length > 0 && typeof extensiveChannelInfo.members[0] !== 'object') {
         ;(async() => {
-          let raw = await membersQuery.refetch()
-          setExtensiveChannelInfo(prev => {
-            let r = {...prev}
-            r.members = raw.data.users
-            return r
-          })
+          updateMembers();
         })();
       }
     }, [extensiveChannelInfo])
@@ -79,6 +77,15 @@ const ChannelContextProvider = ({ children }) => {
       setExtensiveChannelInfo(raw.data.getChannel)
     }
 
+    const updateMembers = async () => {
+      let raw = await membersQuery.refetch()
+      setExtensiveChannelInfo(prev => {
+        let r = {...prev}
+        r.members = raw.data.users
+        return r
+      })
+    }
+
     return (
         <ChannelContext.Provider value={{
           focusedChannel,
@@ -87,7 +94,8 @@ const ChannelContextProvider = ({ children }) => {
           extensiveChannelInfo,
           update: {
             userChannels: updateUserChannels,
-            channel: updateChannel 
+            channel: updateChannel,
+            members: updateMembers,
           }}}>
             {children}
         </ChannelContext.Provider>

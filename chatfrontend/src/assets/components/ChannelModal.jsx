@@ -4,6 +4,7 @@ import { ChannelContext } from '../context/channelContext';
 import { useMutation, gql } from '@apollo/client';
 
 import { ADD_CHANNEL_MUTATION, ADD_USER_TO_CHANNEL_MUTATION } from '../api/api';
+import { SocketContext } from '../context/socketContext';
 
 export default function ChannelModal(props) {
     const [channelId, setChannelId] = React.useState("")
@@ -13,11 +14,15 @@ export default function ChannelModal(props) {
     const [addChannel] = useMutation(ADD_CHANNEL_MUTATION);
     const {user} = React.useContext(UserContext)
     const {update} = React.useContext(ChannelContext)
+    const {socket} = React.useContext(SocketContext)
 
     const handleAddUserToChannel = async () => {
-        return await addUserToChannel({
-            variables: { id: user.id, channel: channelId },
-          });
+        try {
+            await addUserToChannel({
+                variables: { id: user.id, channel: channelId },
+            });
+            return socket.emit("newMember", {channel: channelId, user: user.id})
+        } catch (ex) {}
     }
 
     const handleAddChannel = async () => {
@@ -31,8 +36,8 @@ export default function ChannelModal(props) {
         if (raw.data?.addUserToChannel?.status == "error") {
             setError(true)
         } else {
-            cancel("", true);
             update.userChannels();
+            cancel("", true);
         }
     }
 
@@ -41,8 +46,8 @@ export default function ChannelModal(props) {
         if (raw.data?.addChannel?.status == "error") {
             setError(true)
         } else {
-            cancel("", true);
             update.userChannels();
+            cancel("", true);
         }
     }
 

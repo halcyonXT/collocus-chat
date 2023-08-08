@@ -74,7 +74,7 @@ export default function MessagingPanel(props) {
     const [typing, setTyping] = React.useState([])
     const [channelModalOpen, setChannelModalOpen] = React.useState(false)
     const [profileModalOpen, setProfileModalOpen] = React.useState(false)
-    let {focusedChannel, setFocusedChannel, extensiveChannelInfo} = React.useContext(ChannelContext)
+    let {focusedChannel, setFocusedChannel, extensiveChannelInfo, update} = React.useContext(ChannelContext)
     const [addMessage] = useMutation(ADD_MESSAGE);
     const messagesRef = React.useRef(null)
 
@@ -112,6 +112,12 @@ export default function MessagingPanel(props) {
 
         socket.on("endTyping", info => {
             setTyping(prev => prev.filter(item => item.id !== info.id))
+        })
+
+        socket.on("newMember", id => {
+            if (id !== user.id) {
+                update.members()
+            }
         })
 
         return () => {

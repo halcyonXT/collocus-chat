@@ -73,13 +73,24 @@ const statusReport = (status, message) => {
 
 io.on('connection', socket => {
     statusReport("info", "New WS connection")
+    users[socket.id] = {}
+    users[socket.id].activeChannel = ""
+    users[socket.id].clientSideID = ""
 
     socket.broadcast.emit('info', 'A user has joined the chat');
 
+    socket.on('newMember', obj => {
+        if (channels[obj.channel]) {
+            channels[obj.channel].forEach(client => {
+                io.to(client).emit("newMember", obj.user)
+            })
+        }
+    })
+
     socket.on('chatMessage', msg => {
         let channel = ""
-        if (users[socket.id]) {
-            channel = users[socket.id]
+        if (users[socket.id].activeChannel) {
+            channel = users[socket.id].activeChannel
         } else return
         if (channels[channel]) {
             channels[channel].forEach(client => {
@@ -89,8 +100,8 @@ io.on('connection', socket => {
     })
 
     socket.on('startTyping', info => {
-        if (users[socket.id]) {
-            channels[users[socket.id]].forEach(client => {
+        if (users[socket.id].activeChannel) {
+            channels[users[socket.id].activeChannel].forEach(client => {
                 if (client !== socket.id) {
                     io.to(client).emit('startTyping', {
                         name: info.name,
@@ -102,8 +113,8 @@ io.on('connection', socket => {
     })
 
     socket.on('endTyping', info => {
-        if (users[socket.id]) {
-            channels[users[socket.id]].forEach(client => {
+        if (users[socket.id].activeChannel) {
+            channels[users[socket.id].activeChannel].forEach(client => {
                 if (client !== socket.id) {
                     io.to(client).emit('endTyping', {
                         name: info.name,
@@ -114,24 +125,34 @@ io.on('connection', socket => {
         }
     })
 
-    socket.on('joinChannel', (channelId) => {
-        socket.join(channelId);
-        statusReport("info", `User ${socket.id} joined ${channelId}`)
-        if (!channels[channelId]) {
-          channels[channelId] = [];
+    socket.on('joinChannel', (info) => {
+        socket.join(info.channel);
+        statusReport("info", `User ${socket.id} joined ${info.channel}`)
+        if (!channels[info.channel]) {
+          channels[info.channel] = [];
         }
-        if (!users[socket.id]) {
-            users[socket.id] = channelId
+        if (!users[socket.id].activeChannel) {
+            users[socket.id] = {}
+            users[socket.id].activeChannel = info.channel
+            users[socket.id].clientSideID = info.clientSideID
         } else {
-            channels[users[socket.id]] = channels[users[socket.id]].filter(id => id !== socket.id)
-            users[socket.id] = channelId
+            channels[users[socket.id].activeChannel] = channels[users[socket.id].activeChannel].filter(id => id !== socket.id)
+            users[socket.id].activeChannel = info.channel
         }
-        channels[channelId].push(socket.id);
+        channels[info.channel].push(socket.id);
     });
 
     socket.on('disconnect', () => {
-        if (users[socket.id]) {
-            channels[users[socket.id]].filter(id => id !== socket.id);
+        if (users[socket.id].clientSideID) {
+            channels[users[socket.id].activeChannel].forEach(client => {
+                io.to(client).emit('endTyping', {
+                    name: "",
+                    id: users[socket.id].clientSideID
+                })
+            })
+        }
+        if (users[socket.id].activeChannel) {
+            channels[users[socket.id].activeChannel].filter(id => id !== socket.id);
             delete users[socket.id];
         }
     })

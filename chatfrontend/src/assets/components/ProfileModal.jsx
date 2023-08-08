@@ -1,6 +1,9 @@
 import React from 'react'
 import Input from './Input'
 import { UserContext } from '../context/userContext'
+import { useMutation } from '@apollo/client'
+import { MUTATE_USER } from '../api/api'
+
 
 export default function ProfileModal(props) {
 
@@ -15,14 +18,62 @@ export default function ProfileModal(props) {
 }
 
 const General = (props) => {
-    const {user} = React.useContext(UserContext)
+    const {user, setUser} = React.useContext(UserContext)
+    const [hoverProfilePicture, setHoverProfilePicture] = React.useState(false)
+
+    const handleFileUpload = () => {
+        var file = document.getElementById('image_input');
+        var form = new FormData();
+
+        form.append("image", file.files[0])
+
+        const settings = {
+            method: "POST",
+            body: form,
+        };
+
+        fetch("https://api.imgbb.com/1/upload?key=dc9d23770f82e3944cfe772accbd0428", settings)
+            .then(response => response.json())
+            .then(data => {
+                handleMutation("profilePicture", data.data.display_url)
+            })
+            .catch(error => console.error(error));
+    }
+
+    const [mutateUser] = useMutation(MUTATE_USER);
+
+    const handleMutation = (key, value) => {
+        mutateUser({
+            variables: {
+                key: key,
+                value: value
+            }
+        })
+        .then(result => {
+            const response = result.data.mutateUser;
+            if (response.status === "success") {
+                setUser(prev => ({...prev, profilePicture: value}))
+            }
+        })
+        .catch(error => {console.error(error)});
+    };
 
     return (
         <div className='w-full flex items-start overflow-y-auto justify-start h-16' id='profile-modal'>
-            <img
-                src={user.profilePicture}
-                className='rounded-full mr-4 h-16 aspect-square'
-            />
+            <div className='h-16 aspect-square cursor-pointer relative grid mr-4 place-items-center' onMouseEnter={() => setHoverProfilePicture(true)} onMouseLeave={() => setHoverProfilePicture(false)}>
+                <img
+                    src={user.profilePicture}
+                    className={`rounded-full duration-100 h-16 aspect-square ${hoverProfilePicture && 'brightness-50'}`}
+                />
+                {
+                    hoverProfilePicture
+                    &&
+                    <>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="65%" className='absolute fill-300' viewBox="0 -960 960 960"><path d="M180-120q-24.75 0-42.375-17.625T120-180v-600q0-24.75 17.625-42.375T180-840h409v60H180v600h600v-408h60v408q0 24.75-17.625 42.375T780-120H180Zm520-498v-81h-81v-60h81v-81h60v81h81v60h-81v81h-60ZM240-282h480L576-474 449-307l-94-124-115 149Zm-60-498v600-600Z"/></svg>
+                        <input type="file" onChange={handleFileUpload} className='absolute w-full min-h-full cursor-pointer opacity-0' id="image_input"></input>
+                    </>
+                }
+            </div>
             <div className='h-full flex flex-col justify-start w-[calc(100%-4rem)]'>
                 <div>
                     <div className='text-500 quicksand text-[8px] leading-none'>
@@ -54,6 +105,25 @@ const ChangeUsername = (props) => {
 
     const handleChangeUsername = (e) => setUsername(e.target.value)
     const handleChangePassword = (e) => setPassword(e.target.value)
+
+    const [mutateUser] = useMutation(MUTATE_USER);
+
+    const handleMutation = () => {
+        if (username.length < 3 || username.length > 20) {return}
+        mutateUser({
+            variables: {
+                key: key,
+                value: value
+            }
+        })
+        .then(result => {
+            const response = result.data.mutateUser;
+            if (response.status === "success") {
+                setUser(prev => ({...prev, profilePicture: value}))
+            }
+        })
+        .catch(error => {console.error(error)});
+    };
 
     return (
         <AnimatableWrapper id="change-username">
