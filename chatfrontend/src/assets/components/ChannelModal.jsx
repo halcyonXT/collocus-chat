@@ -2,6 +2,7 @@ import React from 'react'
 import { UserContext } from '../context/userContext';
 import { ChannelContext } from '../context/channelContext';
 import { useMutation, gql } from '@apollo/client';
+import Input from './Input';
 
 import { ADD_CHANNEL_MUTATION, ADD_USER_TO_CHANNEL_MUTATION } from '../api/api';
 import { SocketContext } from '../context/socketContext';
@@ -61,38 +62,38 @@ export default function ChannelModal(props) {
                 </div>
             }
             <div className='open-modal-content duration-100 w-full h-max'>
-                <div className='ysab tracking-wide font-medium text-center gap-2 w-full mb-2'>
+                <div className='ysab tracking-wide font-medium text-center gap-2 text-accent w-full mb-2'>
                     JOIN A CHANNEL
                 </div>
-                <input
-                    value={channelId}
-                    onChange={(e) => setChannelId(e.target.value)}
-                    placeholder='Channel ID'
-                    className='w-full change-autofill rounded-lg quicksand overflow-hidden bg-950 outline-none border border-500 box-border p-2 py-1 placeholder:text-500 text-300 duration-150 focus:border-300'
+                <Input
+                    id="channel-id"
+                    tether={channelId}
+                    callback={(e) => setChannelId(e.target.value)}
+                    name="Channel ID"
                 />
             </div>
             <div className='flex w-full justify-between'>
-                <div onClick={joinChannel} className={`py-1 mt-3 mb-1 mx-auto font-medium border rounded-lg cursor-pointer text-center w-40 ysab tracking-widest text-sm ${(channelId) ? 'border-400 text-400 hover:text-200 hover:border-200' : 'pointer-events-none border-600 text-600'} duration-150`}>
+                <div onClick={joinChannel} className={`py-1 mt-3 mb-1 mx-auto font-medium rounded-lg cursor-pointer text-center w-40 ysab tracking-widest text-sm ${(channelId) ? 'bg-accent text-900 hover:brightness-125' : 'pointer-events-none bg-700 text-900'} duration-150`}>
                     PROCEED
                 </div>
             </div>
             <div className='relative w-full h-4 grid place-items-center my-4'>
-                <div className='absolute h-[1px] w-full bg-300'></div>
-                <div className='absolute text-sm ysab font-bold tracking-widest px-1 text-300 bg-950'>OR</div>
+                <div className='absolute h-[1px] w-full bg-600'></div>
+                <div className='absolute text-sm ysab font-bold tracking-widest px-1 text-600 bg-950'>OR</div>
             </div>
             <div className='open-modal-content w-full h-max'>
-                <div className='ysab tracking-wide font-medium text-center gap-2 w-full mb-2'>
+                <div className='ysab tracking-wide font-medium text-center text-accent gap-2 w-full mb-2'>
                     CREATE A CHANNEL
                 </div>
-                <input
-                    value={channelName}
-                    onChange={(e) => setChannelName(e.target.value)}
-                    placeholder='Channel name'
-                    className='w-full change-autofill rounded-lg quicksand overflow-hidden bg-950 outline-none border border-500 box-border p-2 py-1 placeholder:text-500 text-300 duration-150 focus:border-300'
+                <Input
+                    id="channel-name"
+                    tether={channelName}
+                    callback={(e) => setChannelName(e.target.value)}
+                    name="Channel Name"
                 />
             </div>
             <div className='flex w-full justify-between'>
-                <div onClick={createChannel} className={`py-1 mt-3 mb-1 mx-auto font-medium border rounded-lg cursor-pointer text-center w-40 ysab tracking-widest text-sm ${(channelName) ? 'border-400 text-400 hover:text-200 hover:border-200' : 'pointer-events-none border-600 text-600'} duration-150`}>
+                <div onClick={createChannel} className={`py-1 mt-3 mb-1 mx-auto font-medium rounded-lg cursor-pointer text-center w-40 ysab tracking-widest text-sm ${(channelName) ? 'bg-accent text-900 hover:brightness-125' : 'pointer-events-none bg-700 text-900'} duration-150`}>
                     PROCEED
                 </div>
             </div>

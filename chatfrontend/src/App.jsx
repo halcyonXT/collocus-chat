@@ -1,6 +1,6 @@
 import React from 'react';
 import io from 'socket.io-client';
-import collopng from '/collo.png';
+import collopng from '/collo.svg';
 import SidebarGroup from './assets/components/SidebarGroup';
 import SidebarProfile from './assets/components/SidebarProfile';
 import MessagingPanel from './assets/components/MessagingPanel';
@@ -72,15 +72,15 @@ const Home = () => {
 
     return (
         <div className="w-screen h-[100dvh] bg-900 flex">
-                <div className="hidden p-3 h-full bg-950 border-r border-600 w-[18rem] md:flex md:flex-col">
+                <div className="hidden p-3 h-full bg-950 border-r border-700 w-[18rem] md:flex md:flex-col">
                     <a href="/">
                         <div className="w-full pb-3 h-8 max-h-8 mb-[1%] flex items-center justify-start gap-3 tracking-widest select-none border-b border-700 box-content">
                             <img src={collopng} className="h-full" />
                             <div className="ysab leading-none flex flex-col">
-                                <div className="clamp-title text-300 font-black lg:leading-none md:leading-none decoration-0 text-[0.85rem]">
+                                <div className="clamp-title text-accent font-black lg:leading-none md:leading-none decoration-0 text-[0.85rem]">
                                     COLLOCUS
                                 </div>
-                                <div className="clamp-subtitle mt-1 text-500 block text-[8px]">
+                                <div className="clamp-subtitle mt-1 text-600 block text-[8px]">
                                     CONNECTING PEOPLE, INSTANTLY
                                 </div>
                             </div>
@@ -143,7 +143,7 @@ const Home = () => {
 
 const Setting = (props) => {
     return (
-        <div className='h-8 py-2 w-[calc(100%-1.5rem)] ml-3 pl-6 box-content border-l border-500 duration-150 cursor-pointer flex items-center p-1 fill-500 hover:fill-300 text-500 hover:text-300 hover:border-300 hover:border-l-8 justify-start gap-2' onClick={props.callback && props.callback}>
+        <div className='h-8 py-2 w-[calc(100%-1.5rem)] ml-3 pl-6 box-content border-l border-500 duration-150 cursor-pointer flex items-center p-1 fill-600 hover:brightness-125 text-600 hover:border-300 hover:border-l-8 justify-start gap-2' onClick={props.callback && props.callback}>
             {props.icon}
             <div className='ysab font-normal text-base'>
                 {props.name}

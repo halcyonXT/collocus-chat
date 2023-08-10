@@ -240,13 +240,13 @@ export default function MessagingPanel(props) {
                         renderMessages
                         :
                         <div className='w-full min-w-full flex flex-col justify-center items-center mb-8'>
-                            <div className='text-600 quicksand text-2xl'>
+                            <div className='text-700 quicksand text-2xl'>
                                 Welcome to
                             </div>
-                            <div className='text-500 ysab font-bold text-3xl tracking-[0.05em]'>
+                            <div className='text-accent ysab font-bold text-3xl tracking-[0.05em]'>
                                 COLLOCUS
                             </div>
-                            <div className='text-600 quicksand text-2xl'>
+                            <div className='text-700 quicksand text-2xl'>
                                 Select a channel to start chatting in
                             </div>
                         </div>
@@ -255,7 +255,7 @@ export default function MessagingPanel(props) {
                 </div>
                 
                 <div className='filler-pointer absolute right-0 bottom-0 w-full min-h-[7%] h-max max-h-[15rem] bg-[linear-gradient(0deg,var(--950),transparent)] flex justify-center align-end box-border p-2'>
-                    <div className='bg-950 md:w-[98%] py-1 w-full h-[85%] border border-700 rounded-[1vh] box-border mt-[0.5%] mb-4 px-6 md:px-4 flex justify-start items-center'>
+                    <div className='bg-950 md:w-[98%] py-1 w-full h-[85%] border border-800 rounded-[1vh] box-border mt-[0.5%] mb-4 px-6 md:px-4 flex justify-start items-center'>
                         <form onSubmit={handleSendMessage} className='form-input grow h-max'>
                             <textarea className={`
                                 main-input 
@@ -274,8 +274,8 @@ export default function MessagingPanel(props) {
                                 bg-transparent 
                                 quicksand 
                                 grow 
-                                text-300 
-                                placeholder:text-600 
+                                text-600
+                                placeholder:text-700 
                                 focus:border-300
                                 font-medium
                                 outline-none 
@@ -290,7 +290,7 @@ export default function MessagingPanel(props) {
                         {
                             typing.length > 0
                             &&
-                            <div className='absolute bottom-[0.07rem] text-sm ysab font-light text-400 flex'>
+                            <div className='absolute bottom-[0.07rem] text-sm ysab font-light text-600 flex'>
                                 <div className='flex gap-2 animate-pulse'>
                                     ●●●
                                 </div>
@@ -301,7 +301,7 @@ export default function MessagingPanel(props) {
                                 &nbsp;{typing.length === 1 ? "is " : "are "}typing
                             </div>
                         }
-                        <div className={`h-9 duration-200 aspect-square ${messageInput ? "fill-400" : "fill-600"} hover:fill-300 grid place-items-center cursor-pointer`} onClick={handleSendMessage}>
+                        <div className={`h-9 duration-200 aspect-square ${messageInput ? "fill-600" : "fill-700"} hover:fill-300 grid place-items-center cursor-pointer`} onClick={handleSendMessage}>
                             <svg xmlns="http://www.w3.org/2000/svg" height="85%" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg>
                         </div>
                     </div>

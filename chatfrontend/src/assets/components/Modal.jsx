@@ -46,9 +46,9 @@ function Modal(props) {
 
     return (
         <div onClick={(e) => cancel(e)} className='absolute modal-background top-0 left-0 z-[1] w-full h-full grid place-items-center bg-black bg-opacity-0 cancel-bg'>
-            <div className='open-modal overflow-hidden w-96 border border-500 bg-950 max-h-[80vh] max-w-[90vw] font-medium ysab text-base text-300 rounded-lg shadow-md shadow-950 p-4 box-content h-max'>
+            <div className='open-modal overflow-hidden w-96 border border-700 bg-950 max-h-[80vh] max-w-[90vw] font-medium ysab text-base text-300 rounded-lg shadow-md shadow-950 p-4 box-content h-max'>
                 <div id='open-modal-content' className='open-modal-content relative duration-100 w-full h-max'>
-                    <svg onClick={(e) => cancel(e, true)} className='absolute z-50 -top-2 duration-100 cursor-pointer -right-2 fill-500 hover:fill-300' xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 -960 960 960"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
+                    <svg onClick={(e) => cancel(e, true)} className='absolute z-50 -top-2 duration-100 cursor-pointer -right-2 fill-700 hover:fill-600' xmlns="http://www.w3.org/2000/svg" height="1.5rem" viewBox="0 -960 960 960"><path d="m249-207-42-42 231-231-231-231 42-42 231 231 231-231 42 42-231 231 231 231-42 42-231-231-231 231Z"/></svg>
                     {
                         props.children
                     }
