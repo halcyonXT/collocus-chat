@@ -68,11 +68,13 @@ export default function LoggedOutPage() {
 
     React.useEffect(() => {
         let el = document.querySelector('.main-input')
-        let elf = document.querySelector('.form-input')
+        let pointer = document.querySelector('.filler-pointer')
         el.style.height = '1px'
-        elf.height = `${el.scrollHeight}px`
+        document.querySelector('.bottom-filler').style.height = `${el.scrollHeight + 35}px`
+        document.querySelector('.bottom-filler').style.minHeight = `min(${el.scrollHeight + 35}px, 22.5dvh)`
         el.style.height = `${el.scrollHeight}px`
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+
 
         setInterval(() => {
             setTime(prev => prev + 1)
@@ -215,7 +217,7 @@ export default function LoggedOutPage() {
                     renderedMessages
                 }
             </div>
-            <div className='w-full min-h-[7%] h-max max-h-[15rem] bg-950 border-t border-700 grid place-items-center box-border p-2 relative'>
+            <div className='w-full min-h-[7%] h-max max-h-[15rem] border-700 grid place-items-center box-border p-2 relative'>
                 {
                     newMessages
                     &&
@@ -223,33 +225,38 @@ export default function LoggedOutPage() {
                         <svg xmlns="http://www.w3.org/2000/svg" height="80%" viewBox="0 -960 960 960"><path d="M480-345 240-585l43-43 197 198 197-197 43 43-240 239Z"/></svg>
                     </div>
                 }
-                <div className='md:w-[98%] w-full h-[90%] border border-700 rounded-[1vh] box-border my-[0.5%] px-[3%] md:px-[1%] flex justify-start items-center'>
-                    <form className='form-input grow h-max'>
-                        <textarea className={`
-                            main-input 
-                            p-[0.3%]
-                            ${isMobile ? "text-base" : "text-lg"}
-                            pl-0
-                            min-h-full 
-                            max-h-[20vh] 
-                            h-max 
-                            resize-none 
-                            overflow-y-hidden 
-                            w-full 
-                            border-none 
-                            bg-transparent 
-                            quicksand 
-                            grow 
-                            text-400 
-                            placeholder:text-600 
-                            outline-none 
-                            flex justify-start items-center`}
-                        placeholder='Join Collocus to be able to message' 
-                        spellCheck="false"
-                        disabled></textarea>
-                    </form>
-                    <div className={`h-9 duration-200 aspect-square fill-600 hover:fill-300 grid place-items-center cursor-pointer`}>
-                        <svg xmlns="http://www.w3.org/2000/svg" height="85%" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg>
+                <div className='bottom-filler w-full max-h-[21vh]'></div>
+                <div className='filler-pointer absolute right-0 bottom-0 w-full min-h-[7%] h-max max-h-[15rem] bg-[linear-gradient(0deg,var(--950),transparent)] flex justify-center align-end box-border p-2'>
+                    <div className='bg-950 md:w-[98%] py-1 w-full h-[85%] border border-800 rounded-[1vh] box-border mt-[0.5%] mb-4 px-6 md:px-4 flex justify-start items-center'>
+                        <form className='form-input grow h-max'>
+                            <textarea disabled className={`
+                                main-input 
+                                p-[0.3%]
+                                ${isMobile ? "text-base" : "text-lg"}
+                                cursor-not-allowed pointer-events-none
+                                shadow-inner
+                                pl-0
+                                min-h-full 
+                                max-h-[19vh] 
+                                h-7 
+                                resize-none 
+                                overflow-y-auto 
+                                w-full 
+                                border-none 
+                                bg-transparent 
+                                quicksand 
+                                grow 
+                                text-600
+                                placeholder:text-700 
+                                focus:border-300
+                                font-medium
+                                outline-none 
+                                flex justify-start items-center`}
+                            placeholder={`Join Collocus to start chatting`}></textarea>
+                        </form>
+                        <div className={`h-9 duration-200 aspect-square fill-700 hover:fill-300 grid place-items-center cursor-pointer`}>
+                            <svg xmlns="http://www.w3.org/2000/svg" height="85%" viewBox="0 -960 960 960"><path d="M120-160v-640l760 320-760 320Zm60-93 544-227-544-230v168l242 62-242 60v167Zm0 0v-457 457Z"/></svg>
+                        </div>
                     </div>
                 </div>
             </div>
