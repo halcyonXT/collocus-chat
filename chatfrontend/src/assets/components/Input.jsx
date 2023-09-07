@@ -40,7 +40,7 @@ export default function Input(props) {
                     id={props.id}
                     value={props.tether}
                     onChange={props.callback}
-                    type={props.type ? props.type : "text"}
+                    type={props.type ? props.visibilityTether ? "text" : props.type : "text"}
                     className='w-full change-autofill rounded-lg text-lg quicksand overflow-hidden bg-950 outline-none border border-700 box-border p-2 py-1 pr-[2.2rem] placeholder:text-700 text-600 duration-150 focus:border-600'
                 />
                 <div className={`escaping-${props.id} leading-none text-base px-1 absolute ml-1 bg-950 text-700 quicksand pointer-events-none duration-100 ease-out`}>

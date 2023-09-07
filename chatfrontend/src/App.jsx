@@ -154,16 +154,16 @@ const Setting = (props) => {
 
 const loggedOutSidebar = 
     <>
-        <div className='w-full text-lg text-500 quicksand box-border px-3 mt-3 text-center font-semibold'>
-            Join <span className='text-200 ysab font-bold tracking-wide'>COLLOCUS</span> now! <br/>Chat in real-time and connect with people from all over the world, instantly.
+        <div className='w-full text-lg quicksand box-border px-3 mt-3 text-center font-semibold text-700'>
+            Join <span className='text-200 text-accent ysab font-bold tracking-wide'>COLLOCUS</span> now! <br/>Chat in real-time and connect with people from all over the world, instantly.
         </div>
         <Link to="/login">
-            <div className='mt-6 py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-full text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
+            <div className='mt-6 py-1 bg-accent hover:brightness-125 font-medium rounded-lg cursor-pointer text-center w-full text-950 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
                 LOG IN
             </div>
         </Link>
         <Link to="/register">
-            <div className='mt-4 py-1 font-medium border border-400 rounded-lg cursor-pointer text-center w-full text-400 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
+            <div className='mt-4 py-1 bg-600 hover:brightness-125 font-medium rounded-lg cursor-pointer text-center w-full text-950 ysab tracking-widest text-base hover:text-200 hover:border-200 duration-150'>
                 SIGN UP
             </div>
         </Link>
